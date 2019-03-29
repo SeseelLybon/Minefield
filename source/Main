@@ -3,12 +3,15 @@ import pyglet
 from pyglet.window import key
 from pyglet.window import mouse
 
+import logging
+logging.basicConfig(level=logging.DEBUG)
+
 from chunk import Chunk
 
 resources_folder = "resources/"
 
-print("Booting...")
-print("Root... ", __file__ )
+logging.debug("Booting...")
+logging.debug("Root... %s", __file__ )
 
 #fps_display = pyglet.clock.ClockDisplay()
 window = pyglet.window.Window()
@@ -23,6 +26,7 @@ label = pyglet.text.Label('score: '+str(score),
 chunk_dict = dict()
 
 chunk_dict[(0,0)] = Chunk((0,0))
+chunk_dict[(1,0)] = Chunk((1,0))
 
 print(chunk_dict[(0,0)])
 
@@ -33,6 +37,8 @@ def on_draw():
     #fps_display.draw()
     label.text = 'score: '+str(score)
     label.draw()
+    for chunk in chunk_dict.values():
+        chunk.draw((0,0))
 
 
 @window.event
@@ -47,9 +53,15 @@ def on_mouse_press(x, y, button, modifiers):
     if button == mouse.LEFT:
         print('Clicked at', x, y)
         score += 1
+    if button == mouse.RIGHT:
+        print('Clicked at', x, y)
+        score += 1
+    if button == mouse.MIDDLE:
+        print('Clicked at', x, y)
+        score += 1
 
 
-print("Pyglet.run()")
+logging.debug("Pyglet.run()")
 pyglet.app.run()
 
-print("End of main")
+logging.debug("End of main")
