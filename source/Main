@@ -1,0 +1,55 @@
+
+import pyglet
+from pyglet.window import key
+from pyglet.window import mouse
+
+from chunk import Chunk
+
+resources_folder = "resources/"
+
+print("Booting...")
+print("Root... ", __file__ )
+
+#fps_display = pyglet.clock.ClockDisplay()
+window = pyglet.window.Window()
+
+score = 0
+label = pyglet.text.Label('score: '+str(score),
+                        font_name='Times New Roman',
+                        font_size=36,
+                        x=window.width//2, y=window.height//2,
+                        anchor_x='center', anchor_y='center')
+
+chunk_dict = dict()
+
+chunk_dict[(0,0)] = Chunk((0,0))
+
+print(chunk_dict[(0,0)])
+
+
+@window.event
+def on_draw():
+    window.clear()
+    #fps_display.draw()
+    label.text = 'score: '+str(score)
+    label.draw()
+
+
+@window.event
+def on_key_press(symbol, modifiers):
+    if symbol == key.UP:
+        print("Hello world")
+
+
+@window.event
+def on_mouse_press(x, y, button, modifiers):
+    global score
+    if button == mouse.LEFT:
+        print('Clicked at', x, y)
+        score += 1
+
+
+print("Pyglet.run()")
+pyglet.app.run()
+
+print("End of main")
