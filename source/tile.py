@@ -34,9 +34,12 @@ class Tile:
 
     def __repr__(self):
         if self.isMine:
-            return "isMine"
+            return "X"
         else:
-            return str(self.proximity)
+            if self.proximity == 0:
+                return " "
+            else:
+                return str(self.proximity)
 
     def draw(self, offset:tuple):
         self.sprite.update(x=self.pos[0]+offset[0],y=self.pos[1]+offset[1])

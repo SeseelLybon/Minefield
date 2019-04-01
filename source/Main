@@ -20,7 +20,7 @@ score = 0
 label = pyglet.text.Label('score: '+str(score),
                         font_name='Times New Roman',
                         font_size=36,
-                        x=window.width//2, y=window.height//2,
+                        x=50, y=window.height-100,
                         anchor_x='center', anchor_y='center')
 
 chunk_dict = dict()
@@ -59,6 +59,16 @@ def on_mouse_press(x, y, button, modifiers):
     if button == mouse.MIDDLE:
         print('Clicked at', x, y)
         score += 1
+
+@window.event
+def on_mouse_scroll(x, y, scroll_x, scroll_y):
+    global score
+    score += scroll_y
+
+@window.event
+def on_mouse_drag(x, y, dx, dy, buttons, modifiers):
+    global score
+    score += 10
 
 
 logging.debug("Pyglet.run()")

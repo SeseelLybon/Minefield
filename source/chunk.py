@@ -28,22 +28,21 @@ class Chunk:
                 self._chunk[x][y].isMine = isMine
 
         #populate non-mines with proximity
-
+        '''
         offsets = [(-1,-1),(0,-1),(1,-1),
-                   (-1,0),(1,0),   #doesn't contain (0,0) because this is self
-                   (-1,1),(0,1),(1,1)]
+                   (-1,0),        (1,0),   #doesn't contain (0,0) because this is self
+                   (-1,1), (0,1), (1,1)]
 
-        for x in range(0,16):
-            for y in range(0,16):
+        for x in range(0,15):
+            for y in range(0,15):
                 count = 0
                 for offset in offsets:
-                    try:
+                    if 0 < x+offset[0] < len(self._chunk) and\
+                            0 < y+offset[1] < len(self._chunk[x]):
                         if self._chunk[x+offset[0]][y+offset[1]].isMine:
                             count+=1
-                    except IndexError:
-                        pass
                 self._chunk[x][y].proximity = count
-
+        '''
 
     def __repr__(self):
         temp = ""
@@ -54,4 +53,5 @@ class Chunk:
     def draw(self, offset:tuple):
         for y in self._chunk:
             for tile in y:
-                tile.draw(offset+self.pos)
+                tile.draw((offset[0]+self.pos[0],
+                           offset[1]+self.pos[1]))
