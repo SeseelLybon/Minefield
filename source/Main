@@ -8,6 +8,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 from chunk import Chunk
 from position import Position
+from chunkmanager import ChunkManager
 
 resources_folder = "resources/"
 
@@ -24,10 +25,10 @@ label = pyglet.text.Label('score: '+str(score),
                         x=50, y=window.height-100,
                         anchor_x='center', anchor_y='center')
 
-chunk_dict = dict()
+chunk_dict = ChunkManager.chunk_dict
 
-chunk_dict[(0,0)] = Chunk((0,0))
-chunk_dict[(1,0)] = Chunk((1,0))
+ChunkManager.registerchunk((0, 0))
+ChunkManager.registerchunk((1, 0))
 
 #print(chunk_dict[(0,0)])
 
@@ -58,10 +59,10 @@ def on_mouse_press(x, y, button, modifiers):
     if button == mouse.LEFT:
         print('Clicked at', x, y, chunkpos, tilepos)
         score += 1
-        chunk_dict[chunkpos].gettile(tilepos).reveal()
+        chunk_dict[chunkpos].activatetile(tilepos)
     if button == mouse.RIGHT:
         print('Clicked at', x, y, chunkpos, tilepos)
-        chunk_dict[chunkpos].gettile(tilepos).flag()
+        chunk_dict[chunkpos].flagtile(tilepos)
 
 
 @window.event

@@ -20,6 +20,10 @@ class Position:
         return pos
 
     @classmethod
-    def postopix(cls, pos : tuple) -> tuple:
+    def postochunk(cls, pos : tuple) -> tuple:
         pix = pos[0]*21,pos[1]*21
         return pix
+
+    @classmethod
+    def tupleadd(cls, posa:tuple, posb:tuple) -> tuple:
+        return posa[0]+posb[0],posa[1]+posb[1]

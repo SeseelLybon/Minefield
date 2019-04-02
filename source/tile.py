@@ -48,17 +48,6 @@ class Tile:
         self.sprite.draw()
         pass
 
-    def activate(self):
-        if self.isHidden and not self.isFlagged:
-            self.isFlagged = False
-            self.reveal()
-
-    def reveal(self):
-        if self.isMine:
-            self.sprite.image = self.image_mine_hit
-        else:
-            self.sprite.image = self.images_prox[self.proximity]
-
     def flag(self):
         if self.isHidden and not self.isFlagged:
             self.sprite.image = self.image_flagged
@@ -66,3 +55,11 @@ class Tile:
         elif self.isHidden and self.isFlagged:
             self.sprite.image = self.image_hidden
             self.isFlagged = False
+
+    def reveal(self,prox:int=0):
+        if self.isMine:
+            self.sprite.image = self.image_mine_hit
+            self.isHidden = False
+        else:
+            self.sprite.image = self.images_prox[prox]
+            self.isHidden = False

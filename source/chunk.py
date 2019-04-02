@@ -4,11 +4,13 @@ from tile import Tile
 
 from random import random
 
+
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
 class Chunk:
-    def __init__(self, pos:tuple):
+    def __init__(self, pos:tuple, chunkmanager):
+        self.chunkmanager = chunkmanager
         self.pos = pos[0]*16*21,pos[1]*16*21
         self._chunk = [None]*16
         for i in range(0,16):
@@ -57,3 +59,16 @@ class Chunk:
                            offset[1]+self.pos[1]))
     def gettile(self, pos):
         return self._chunk[pos[0]][pos[1]]
+
+
+    def flagtile(self, tilepos:tuple):
+        self.gettile(tilepos).flag()
+
+    def activatetile(self, tilepos:tuple):
+        tile = self.gettile(tilepos)
+        if tile.isHidden and not tile.isFlagged:
+            if tile.isMine:
+                tile.reveal()
+            else:
+                mines = self.chunkmanager.getneighbouringmines(poschunk=self.pos, postile=tilepos)
+                tile.reveal(prox=mines)
