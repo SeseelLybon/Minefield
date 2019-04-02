@@ -55,3 +55,5 @@ class Chunk:
             for tile in y:
                 tile.draw((offset[0]+self.pos[0],
                            offset[1]+self.pos[1]))
+    def gettile(self, pos):
+        return self._chunk[pos[0]][pos[1]]

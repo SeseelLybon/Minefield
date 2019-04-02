@@ -7,6 +7,7 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 
 from chunk import Chunk
+from position import Position
 
 resources_folder = "resources/"
 
@@ -28,7 +29,7 @@ chunk_dict = dict()
 chunk_dict[(0,0)] = Chunk((0,0))
 chunk_dict[(1,0)] = Chunk((1,0))
 
-print(chunk_dict[(0,0)])
+#print(chunk_dict[(0,0)])
 
 
 @window.event
@@ -50,15 +51,18 @@ def on_key_press(symbol, modifiers):
 @window.event
 def on_mouse_press(x, y, button, modifiers):
     global score
+
+    tilepos = Position.pixtotile((x,y))
+    chunkpos = Position.pixtochunk((x,y))
+
     if button == mouse.LEFT:
-        print('Clicked at', x, y)
+        print('Clicked at', x, y, chunkpos, tilepos)
         score += 1
+        chunk_dict[chunkpos].gettile(tilepos).reveal()
     if button == mouse.RIGHT:
-        print('Clicked at', x, y)
-        score += 1
-    if button == mouse.MIDDLE:
-        print('Clicked at', x, y)
-        score += 1
+        print('Clicked at', x, y, chunkpos, tilepos)
+        chunk_dict[chunkpos].gettile(tilepos).flag()
+
 
 @window.event
 def on_mouse_scroll(x, y, scroll_x, scroll_y):

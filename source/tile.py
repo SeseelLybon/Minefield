@@ -7,15 +7,16 @@ import pyglet
 class Tile:
 
     resources_folder = "resources/"
-    image_prox_0 = pyglet.resource.image(resources_folder+'prox_0.png')
-    image_prox_1 = pyglet.resource.image(resources_folder+'prox_1.png')
-    image_prox_2 = pyglet.resource.image(resources_folder+'prox_2.png')
-    image_prox_3 = pyglet.resource.image(resources_folder+'prox_3.png')
-    image_prox_4 = pyglet.resource.image(resources_folder+'prox_00.png')
-    image_prox_5 = pyglet.resource.image(resources_folder+'prox_00.png')
-    image_prox_6 = pyglet.resource.image(resources_folder+'prox_00.png')
-    image_prox_7 = pyglet.resource.image(resources_folder+'prox_00.png')
-    image_prox_8 = pyglet.resource.image(resources_folder+'prox_00.png')
+    images_prox = [pyglet.resource.image(resources_folder+'prox_0.png'),
+                   pyglet.resource.image(resources_folder+'prox_1.png'),
+                   pyglet.resource.image(resources_folder+'prox_2.png'),
+                   pyglet.resource.image(resources_folder+'prox_3.png'),
+                   pyglet.resource.image(resources_folder+'prox_00.png'),
+                   pyglet.resource.image(resources_folder+'prox_00.png'),
+                   pyglet.resource.image(resources_folder+'prox_00.png'),
+                   pyglet.resource.image(resources_folder+'prox_00.png'),
+                   pyglet.resource.image(resources_folder+'prox_00.png'),
+                   pyglet.resource.image(resources_folder+'prox_00.png')]
 
     image_hidden = pyglet.resource.image(resources_folder+'hidden.png')
 
@@ -29,7 +30,8 @@ class Tile:
         self.pos = pos
         self.isMine = isMine
         self.proximity = 0
-        self.isVisible = False
+        self.isHidden = True
+        self.isFlagged = False
         self.sprite = pyglet.sprite.Sprite(self.image_hidden, x=pos[0], y=pos[1] )
 
     def __repr__(self):
@@ -45,3 +47,22 @@ class Tile:
         self.sprite.update(x=self.pos[0]+offset[0],y=self.pos[1]+offset[1])
         self.sprite.draw()
         pass
+
+    def activate(self):
+        if self.isHidden and not self.isFlagged:
+            self.isFlagged = False
+            self.reveal()
+
+    def reveal(self):
+        if self.isMine:
+            self.sprite.image = self.image_mine_hit
+        else:
+            self.sprite.image = self.images_prox[self.proximity]
+
+    def flag(self):
+        if self.isHidden and not self.isFlagged:
+            self.sprite.image = self.image_flagged
+            self.isFlagged = True
+        elif self.isHidden and self.isFlagged:
+            self.sprite.image = self.image_hidden
+            self.isFlagged = False
