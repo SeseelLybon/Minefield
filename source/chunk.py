@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.DEBUG)
 class Chunk:
     def __init__(self, pos:tuple, chunkmanager, batch):
         self.chunkmanager = chunkmanager
-        self.pos = pos[0]*16*21,pos[1]*16*21
+        self.pos = pos[0]*16*21,pos[1]*16*21 #self.pos is in pixels, pos is in chunks!!!
         self._chunk = [None]*16
         for i in range(0,16):
             self._chunk[i] = [None]*16
@@ -61,7 +61,7 @@ class Chunk:
     def updatesprites(self, pos:tuple):
         for x in range(0,16):
             for y in range(0,16):
-                self._chunk[x][y].updatepos( (x*21+pos[0]*16*21, y*21+pos[1]*16*21) )
+                self._chunk[x][y].updatepos( (x*21+pos[0], y*21+pos[1]) )
 
     def gettile(self, pos):
         return self._chunk[pos[0]][pos[1]]

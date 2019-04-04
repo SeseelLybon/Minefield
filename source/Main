@@ -34,13 +34,16 @@ ChunkManager.registerchunk((1, 0))
 #print(chunk_dict[(0,0)])
 
 
+offset = [0,0]
+
 @window.event
 def on_draw():
+    global offset
     window.clear()
     #fps_display.draw()
     label.text = 'score: '+str(score)
     label.draw()
-    ChunkManager.updatesprites()
+    ChunkManager.updatesprites(offset)
     batch.draw()
     #or chunk in chunk_dict.values():
     #    chunk.draw((0,0))
@@ -55,6 +58,10 @@ def on_key_press(symbol, modifiers):
 @window.event
 def on_mouse_press(x, y, button, modifiers):
     global score
+    global offset
+
+    x = x-offset[0]
+    y = y-offset[1]
 
     tilepos = Position.pixtotile((x,y))
     chunkpos = Position.pixtochunk((x,y))
@@ -76,6 +83,9 @@ def on_mouse_scroll(x, y, scroll_x, scroll_y):
 @window.event
 def on_mouse_drag(x, y, dx, dy, buttons, modifiers):
     global score
+    global offset
+    offset[0] += dx
+    offset[1] += dy
     score += 10
 
 

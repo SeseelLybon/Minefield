@@ -35,6 +35,6 @@ class ChunkManager:
         return count
 
     @classmethod
-    def updatesprites(cls):
+    def updatesprites(cls, offset):
         for key, value in cls.chunk_dict.items():
-            value.updatesprites(key)
+            value.updatesprites((offset[0]+value.pos[0],offset[1]+value.pos[1]))
