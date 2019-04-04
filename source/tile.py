@@ -3,7 +3,6 @@
 
 import pyglet
 
-
 class Tile:
 
     resources_folder = "resources/"
@@ -26,13 +25,14 @@ class Tile:
 
 
 
-    def __init__(self, pos:tuple, isMine=False):
+    def __init__(self, batch, pos:tuple, isMine=False):
         self.pos = pos
         self.isMine = isMine
         self.proximity = 0
         self.isHidden = True
         self.isFlagged = False
-        self.sprite = pyglet.sprite.Sprite(self.image_hidden, x=pos[0], y=pos[1] )
+        self.sprite = pyglet.sprite.Sprite(self.image_hidden, x=pos[0], y=pos[1],
+                                           batch=batch )
 
     def __repr__(self):
         if self.isMine:
@@ -63,3 +63,6 @@ class Tile:
         else:
             self.sprite.image = self.images_prox[prox]
             self.isHidden = False
+
+    def updatepos(self, pos:tuple):
+        self.sprite.update(x=pos[0],y=pos[1])

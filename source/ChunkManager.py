@@ -1,14 +1,19 @@
 
 from chunk import Chunk
 from position import Position
+import pyglet
+
+batch = pyglet.graphics.Batch()
+sprites = list()
 
 class ChunkManager:
+
 
     chunk_dict = dict()
 
     @classmethod
     def registerchunk(cls, pos:tuple):
-        cls.chunk_dict[pos] = Chunk(pos,cls)
+        cls.chunk_dict[pos] = Chunk(pos,cls,batch=batch)
 
     offsets = [(-1, -1), (0, -1), (1, -1),
                (-1, 0), (1, 0),  # doesn't contain (0,0) because this is self
@@ -24,7 +29,12 @@ class ChunkManager:
             if 0 < offsettile[0] < 16 and 0 < offsettile[1] < 16:
                 if cls.chunk_dict[poschunk].gettile(offsettile).isMine:
                     count+=1
-
+            #what if the tile is outside the chunk?
 
 
         return count
+
+    @classmethod
+    def updatesprites(cls):
+        for key, value in cls.chunk_dict.items():
+            value.updatesprites(key)

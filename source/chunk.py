@@ -9,7 +9,7 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 
 class Chunk:
-    def __init__(self, pos:tuple, chunkmanager):
+    def __init__(self, pos:tuple, chunkmanager, batch):
         self.chunkmanager = chunkmanager
         self.pos = pos[0]*16*21,pos[1]*16*21
         self._chunk = [None]*16
@@ -19,7 +19,7 @@ class Chunk:
         #generate the data structure
         for x in range(0,16):
             for y in range(0,16):
-                self._chunk[x][y] = Tile(pos=(x*21,y*21))
+                self._chunk[x][y] = Tile(batch, pos=(x*21*pos[0],y*21*pos[1]))
 
         #populate the data structure with mines
         for x in range(0,16):
@@ -57,6 +57,12 @@ class Chunk:
             for tile in y:
                 tile.draw((offset[0]+self.pos[0],
                            offset[1]+self.pos[1]))
+
+    def updatesprites(self, pos:tuple):
+        for x in range(0,16):
+            for y in range(0,16):
+                self._chunk[x][y].updatepos( (x*21+pos[0]*16*21, y*21+pos[1]*16*21) )
+
     def gettile(self, pos):
         return self._chunk[pos[0]][pos[1]]
 
