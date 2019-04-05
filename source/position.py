@@ -4,24 +4,31 @@
 
 class Position:
 
+    tilesize = 21
+    chunksize = 16
+
     @classmethod
     def pixtopos(cls, pix : tuple) -> tuple:
-        pos = pix[0]//21,pix[1]//21
+        pos = pix[0]//cls.tilesize,\
+              pix[1]//cls.tilesize
         return pos
 
     @classmethod
     def pixtotile(cls, pix : tuple) -> tuple:
-        tile = pix[0]//21%16,pix[1]//21%16
+        tile = pix[0]//cls.tilesize%cls.chunksize,\
+               pix[1]//cls.tilesize%cls.chunksize
         return tile
 
     @classmethod
     def pixtochunk(cls, pix : tuple) -> tuple:
-        pos = pix[0]//21//16,pix[1]//21//16
+        pos = pix[0]//cls.tilesize//cls.chunksize,\
+              pix[1]//cls.tilesize//cls.chunksize
         return pos
 
     @classmethod
     def postochunk(cls, pos : tuple) -> tuple:
-        pix = pos[0]*21,pos[1]*21
+        pix = pos[0]*cls.tilesize,\
+              pos[1]*cls.tilesize
         return pix
 
     @classmethod
