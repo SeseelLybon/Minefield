@@ -71,7 +71,7 @@ def on_mouse_release(x, y, button, modifiers):
         if chunk:
             chunk.activatetile(tilepos)
     if button == mouse.RIGHT:
-        logging.debug('Clicked at %d, %d, %s, %s', x, y, chunkpos, tilepos)
+        logging.debug('Clicked at %d, %d, %s, %s', x, y, chunkpos, tilepos, offset)
         #print('Clicked at', x, y, chunkpos, tilepos)
         chunk = chunk_dict.get(chunkpos, None)
         if chunk:

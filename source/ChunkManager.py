@@ -46,69 +46,19 @@ class ChunkManager:
     @classmethod
     def updategenchunks(cls, offset, windowsize:tuple):
 
+        screenzero = -offset[0], -offset[1]
+        dots = [Position.pixtochunk((screenzero[0], screenzero[1])),
+                Position.pixtochunk((screenzero[0]+windowsize[0]//2, screenzero[1])),
+                Position.pixtochunk((screenzero[0]+windowsize[0], screenzero[1])),
+                Position.pixtochunk((screenzero[0], screenzero[1]+windowsize[1]//2)),
+                Position.pixtochunk((screenzero[0] + windowsize[0] // 2, screenzero[1]+windowsize[1]//2)),
+                Position.pixtochunk((screenzero[0] + windowsize[0], screenzero[1]+windowsize[1]//2)),
+                Position.pixtochunk((screenzero[0], screenzero[1]+windowsize[1])),
+                Position.pixtochunk((screenzero[0] + windowsize[0] // 2, screenzero[1]+windowsize[1])),
+                Position.pixtochunk((screenzero[0] + windowsize[0], screenzero[1]+windowsize[1])),
 
-        dots = [Position.pixtochunk( ( offset[0]-windowsize[0], offset[1]) ),
-                Position.pixtochunk((offset[0] - windowsize[0] // 2, offset[1])),
-                Position.pixtochunk(offset),
-                P,
-                P,
-                P,
-                P,
-                P,
-                P,
-                P,
-                P,
-                P
                 ]
 
         for dot in dots:
             if not cls.chunk_dict.get( dot ):
                 cls.registerchunk(dot)
-            
-
-
-        dot =
-
-
-
-        dot =
-
-        if not cls.chunk_dict.get( dot ):
-            cls.registerchunk(dot)
-
-        '''
-        dot = Position.pixtochunk( ( offset[0], offset[1]-windowsize[1]//2) )
-
-        if not cls.chunk_dict.get( dot ):
-            cls.registerchunk(dot)
-
-
-        dot = Position.pixtochunk( ( offset[0]-windowsize[0]//2, offset[1]-windowsize[1]//2) )
-
-        if not cls.chunk_dict.get( dot ):
-            cls.registerchunk(dot)
-
-
-        dot = Position.pixtochunk( ( offset[0]-windowsize[0], offset[1]-windowsize[1]//2) )
-
-        if not cls.chunk_dict.get( dot ):
-            cls.registerchunk(dot)
-
-
-        dot = Position.pixtochunk( ( offset[0], offset[1]-windowsize[1]) )
-
-        if not cls.chunk_dict.get( dot ):
-            cls.registerchunk(dot)
-
-
-        dot = Position.pixtochunk( ( offset[0]-windowsize[0]//2, offset[1]-windowsize[1]) )
-
-        if not cls.chunk_dict.get( dot ):
-            cls.registerchunk(dot)
-
-
-        dot = Position.pixtochunk( ( offset[0]-windowsize[0], offset[1]-windowsize[1]) )
-
-        if not cls.chunk_dict.get( dot ):
-            cls.registerchunk(dot)
-        '''
