@@ -6,7 +6,7 @@ from random import random
 
 
 import logging
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.WARNING)
 
 class Chunk:
     def __init__(self, pos:tuple, chunkmanager, batch):
@@ -25,7 +25,7 @@ class Chunk:
         for x in range(0,16):
             for y in range(0,16):
                 isMine = False
-                if random() > 0.80:
+                if random() > 0.90:
                     isMine = True
                 self._chunk[x][y].isMine = isMine
 
@@ -71,10 +71,42 @@ class Chunk:
         self.gettile(tilepos).flag()
 
     def activatetile(self, tilepos:tuple):
+
         tile = self.gettile(tilepos)
+
         if tile.isHidden and not tile.isFlagged:
             if tile.isMine:
                 tile.reveal()
             else:
-                mines = self.chunkmanager.getneighbouringmines(poschunk=self.pos, postile=tilepos)
+                neightiles = self.chunkmanager.getneighbouringtiles(poschunk=self.pos, postile=tilepos)
+                mines = self.getmines( neightiles )
                 tile.reveal(prox=mines)
+                if mines == 0:
+                    #WARNING: RECURSIVE!
+                    for tile in neightiles:
+                        pass
+                        #self.activatetile_recursive(tile=tile)
+
+    def activatetile_recursive(self, tile:Tile):
+        tilepos = tile.pos
+
+        if tile.isHidden and not tile.isFlagged:
+            if tile.isMine:
+                tile.reveal()
+            else:
+                neightiles = self.chunkmanager.getneighbouringtiles(poschunk=self.pos, postile=tilepos)
+                mines = self.getmines( neightiles )
+                tile.reveal(prox=mines)
+                if mines == 0:
+                    #WARNING: RECURSIVE!
+                    for tile in neightiles:
+                        pass
+                        #self.activatetile_recursive(tile)
+
+    @staticmethod
+    def getmines(tiles:list) ->int:
+        count = 0
+        for tile in tiles:
+            if tile.isMine:
+                count+=1
+        return count

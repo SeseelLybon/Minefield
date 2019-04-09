@@ -22,8 +22,8 @@ window = pyglet.window.Window()
 score = 0
 label = pyglet.text.Label('score: '+str(score),
                         font_name='Times New Roman',
-                        font_size=36,
-                        x=100, y=window.height-100,
+                        font_size=12,
+                        x=50, y=window.height-50,
                         anchor_x='left', anchor_y='center')
 
 chunk_dict = ChunkManager.chunk_dict
@@ -40,12 +40,14 @@ def on_draw():
     window.clear()
     #fps_display.draw()
     label.text = 'score: '+str(score)
-    label.draw()
     ChunkManager.updatesprites(offset)
-    batch.draw()
-    #or chunk in chunk_dict.values():
-    #    chunk.draw((0,0))
 
+    #TODO: ambiant occlusion to tiles
+    batch.draw()
+
+
+
+    label.draw()
     ChunkManager.updategenchunks(offset, (window.width, window.height))
 
 @window.event
@@ -69,9 +71,9 @@ def on_mouse_release(x, y, button, modifiers):
         #print('Clicked at', x, y, chunkpos, tilepos)
         chunk = chunk_dict.get(chunkpos, None)
         if chunk:
-            chunk.activatetile(tilepos)
+            chunk.activatetile(tilepos=tilepos)
     if button == mouse.RIGHT:
-        logging.debug('Clicked at %d, %d, %s, %s', x, y, chunkpos, tilepos, offset)
+        logging.debug('Clicked at (%d, %d), %s, %s, %s', x, y, chunkpos, tilepos, offset)
         #print('Clicked at', x, y, chunkpos, tilepos)
         chunk = chunk_dict.get(chunkpos, None)
         if chunk:
