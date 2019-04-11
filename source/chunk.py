@@ -6,10 +6,10 @@ from random import random
 
 
 import logging
-logging.basicConfig(level=logging.WARNING)
 
 class Chunk:
     def __init__(self, pos:tuple, chunkmanager, batch):
+        self.batch =
         self.chunkmanager = chunkmanager
         self.pos = pos[0]*16*21,pos[1]*16*21 #self.pos is in pixels, pos is in chunks!!!
         self._chunk = [None]*16
@@ -19,7 +19,7 @@ class Chunk:
         #generate the data structure
         for x in range(0,16):
             for y in range(0,16):
-                self._chunk[x][y] = Tile(batch, pos=(x*21*pos[0],y*21*pos[1]))
+                self._chunk[x][y] = Tile(batch, pos=(x,y))
 
         #populate the data structure with mines
         for x in range(0,16):
@@ -28,23 +28,6 @@ class Chunk:
                 if random() > 0.90:
                     isMine = True
                 self._chunk[x][y].isMine = isMine
-
-        #populate non-mines with proximity
-        '''
-        offsets = [(-1,-1),(0,-1),(1,-1),
-                   (-1,0),        (1,0),   #doesn't contain (0,0) because this is self
-                   (-1,1), (0,1), (1,1)]
-
-        for x in range(0,15):
-            for y in range(0,15):
-                count = 0
-                for offset in offsets:
-                    if 0 < x+offset[0] < len(self._chunk) and\
-                            0 < y+offset[1] < len(self._chunk[x]):
-                        if self._chunk[x+offset[0]][y+offset[1]].isMine:
-                            count+=1
-                self._chunk[x][y].proximity = count
-        '''
 
     def __repr__(self):
         temp = ""
@@ -81,27 +64,31 @@ class Chunk:
                 neightiles = self.chunkmanager.getneighbouringtiles(poschunk=self.pos, postile=tilepos)
                 mines = self.getmines( neightiles )
                 tile.reveal(prox=mines)
-                if mines == 0:
+                if mines == 0 and True: # True = use recursion
                     #WARNING: RECURSIVE!
+                    #logging.warning("Chunk:68 Start of using a recursive function!")
                     for tile in neightiles:
                         pass
-                        #self.activatetile_recursive(tile=tile)
+                        self.activatetile_recursive(tile)
 
     def activatetile_recursive(self, tile:Tile):
         tilepos = tile.pos
 
-        if tile.isHidden and not tile.isFlagged:
+        if not tile.isFlagged:
             if tile.isMine:
                 tile.reveal()
             else:
+                #TODO: sends wierd postile
+                #logging.debug("chunk:81 %s, %s", self.pos, tilepos)
                 neightiles = self.chunkmanager.getneighbouringtiles(poschunk=self.pos, postile=tilepos)
                 mines = self.getmines( neightiles )
                 tile.reveal(prox=mines)
-                if mines == 0:
+                if mines == 0 and False: # True = use recursion
                     #WARNING: RECURSIVE!
+                    logging.warning("Chunk:87 Continues use of a recursive function!")
                     for tile in neightiles:
                         pass
-                        #self.activatetile_recursive(tile)
+                        self.activatetile_recursive(tile)
 
     @staticmethod
     def getmines(tiles:list) ->int:

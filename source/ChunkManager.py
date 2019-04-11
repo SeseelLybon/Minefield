@@ -4,7 +4,6 @@ from position import Position
 import pyglet
 
 import logging
-#logging.basicConfig(level=logging.WARNING)
 
 batch = pyglet.graphics.Batch()
 sprites = list()
@@ -43,13 +42,13 @@ class ChunkManager:
                 chunk_offset = [0,0]
 
                 #Right
-                if 0 > offsettile[0]:
+                if offsettile[0] < 0:
                     chunk_offset[0] = -1
                 #Left
                 elif offsettile[0] >= 16:
                     chunk_offset[0] = 1
                 #Down
-                if 0 > offsettile[1]:
+                if offsettile[1] < 0:
                     chunk_offset[1] = -1
                 #Up
                 elif offsettile[1] >= 16:
@@ -58,8 +57,6 @@ class ChunkManager:
 
                 offset_chunk = Position.tupleadd(poschunk,tuple(chunk_offset))
                 offsettile = list(offsettile)
-
-                logging.debug("\t1: %s %s", offsettile, offset_chunk)
 
                 if offsettile[0] == -1:
                     offsettile[0] = 15
@@ -70,8 +67,6 @@ class ChunkManager:
                     offsettile[1] = 15
                 elif offsettile[1] == 16:
                     offsettile[1] = 0
-
-                logging.debug("\t2: %s", offsettile)
 
                 tiles.append( cls.chunk_dict[offset_chunk].gettile(offsettile) )
 
