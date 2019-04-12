@@ -72,25 +72,18 @@ class ChunkManager:
 
         return tiles
 
-    @classmethod
-    def updatesprites(cls, offset):
-        for key, value in cls.chunk_dict.items():
-            value.updatesprites((offset[0]+value.pos[0],offset[1]+value.pos[1]))
+    #@classmethod
+    #def updatesprites(cls, offset):
+    #    for key, value in cls.chunk_dict.items():
+    #        value.updatesprites((offset[0]+value.pos[0],offset[1]+value.pos[1]))
 
     @classmethod
     def updategenchunks(cls, offset, windowsize:tuple):
 
-        screenzero = -offset[0], -offset[1]
-        dots = {Position.pixtochunk((screenzero[0], screenzero[1])),
-                Position.pixtochunk((screenzero[0]+windowsize[0]//2, screenzero[1])),
-                Position.pixtochunk((screenzero[0]+windowsize[0], screenzero[1])),
-                Position.pixtochunk((screenzero[0], screenzero[1]+windowsize[1]//2)),
-                Position.pixtochunk((screenzero[0] + windowsize[0] // 2, screenzero[1]+windowsize[1]//2)),
-                Position.pixtochunk((screenzero[0] + windowsize[0], screenzero[1]+windowsize[1]//2)),
-                Position.pixtochunk((screenzero[0], screenzero[1]+windowsize[1])),
-                Position.pixtochunk((screenzero[0] + windowsize[0] // 2, screenzero[1]+windowsize[1])),
-                Position.pixtochunk((screenzero[0] + windowsize[0], screenzero[1]+windowsize[1])),
-                }
+        offset = Position.tupleadd(offset,(22,22))
+        windowsize = Position.tupleadd(windowsize,(44,44))
+
+        dots = cls.generate_screendots(offset, windowsize)
 
         for dot in dots:
             if not cls.chunk_dict.get( dot ):
@@ -99,6 +92,19 @@ class ChunkManager:
     @classmethod
     def screenspaceocclude_drawchunks(cls, offset, windowsize: tuple):
 
+        dots = cls.generate_screendots(offset, windowsize)
+
+        for dot in dots:
+            chunk = cls.chunk_dict.get(dot, None)
+            if chunk:
+                chunk.updatesprites((offset[0] + chunk.pos[0], offset[1] + chunk.pos[1]))
+                chunk.batch.draw()
+
+
+    @classmethod
+    def generate_screendots(cls, offset, windowsize:tuple) -> set:
+        #TODO: Replace with generate_screendots_redux
+        # This exists as it is not working yet
         screenzero = -offset[0], -offset[1]
         dots = {Position.pixtochunk((screenzero[0], screenzero[1])),
                 Position.pixtochunk((screenzero[0] + windowsize[0] // 2, screenzero[1])),
@@ -110,8 +116,22 @@ class ChunkManager:
                 Position.pixtochunk((screenzero[0] + windowsize[0] // 2, screenzero[1] + windowsize[1])),
                 Position.pixtochunk((screenzero[0] + windowsize[0], screenzero[1] + windowsize[1])),
                 }
+        return dots
 
-        for dot in dots:
-            chunk = cls.chunk_dict.get(dot, None)
-            if chunk:
-                chunk.batch.draw()
+
+    @classmethod
+    def generate_screendots_redux(cls, offset, windowsize:tuple) -> set:
+        #TODO: rewrite to take into account window size
+        #TODO: rewrite to take into account scale
+        screenzero = -offset[0], -offset[1]
+        dots = {Position.pixtochunk((screenzero[0], screenzero[1])),
+                Position.pixtochunk((screenzero[0] + windowsize[0] // 2, screenzero[1])),
+                Position.pixtochunk((screenzero[0] + windowsize[0], screenzero[1])),
+                Position.pixtochunk((screenzero[0], screenzero[1] + windowsize[1] // 2)),
+                Position.pixtochunk((screenzero[0] + windowsize[0] // 2, screenzero[1] + windowsize[1] // 2)),
+                Position.pixtochunk((screenzero[0] + windowsize[0], screenzero[1] + windowsize[1] // 2)),
+                Position.pixtochunk((screenzero[0], screenzero[1] + windowsize[1])),
+                Position.pixtochunk((screenzero[0] + windowsize[0] // 2, screenzero[1] + windowsize[1])),
+                Position.pixtochunk((screenzero[0] + windowsize[0], screenzero[1] + windowsize[1])),
+                }
+        return dots

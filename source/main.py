@@ -17,7 +17,7 @@ logging.critical("Booting...")
 logging.info("Root... %s", __file__ )
 
 #fps_display = pyglet.clock.ClockDisplay()
-window = pyglet.window.Window()
+window = pyglet.window.Window(width=600,height=480)
 
 score = 0
 label = pyglet.text.Label('score: '+str(score),
@@ -38,14 +38,12 @@ def on_draw():
     global window
     window.clear()
     label.text = 'score: '+str(ScoreManager.getscore())
-    ChunkManager.updatesprites(offset)
 
-    #TODO: ambiant occlusion to tiles
+
+    #ChunkManager.updatesprites(offset)
+
+    #Screenspace occlusion of the chunks
     ChunkManager.screenspaceocclude_drawchunks(offset, (window.width, window.height))
-
-    #Check per chunk if its tiles have to be drawn - easier than asking every tile
-    #for chunk in chunk_dict.values():
-    #    chunk.draw()
 
 
     label.draw()
@@ -95,6 +93,11 @@ def on_mouse_drag(x, y, dx, dy, buttons, modifiers):
 
 
 logging.critical("Pyglet.run()")
+
+import cProfile
+
+cProfile.run('pyglet.app.run()')
+
 pyglet.app.run()
 
 logging.critical("End of main")

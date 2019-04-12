@@ -32,5 +32,5 @@ class Position:
         return pix
 
     @classmethod
-    def tupleadd(cls, posa:tuple, posb:tuple) -> tuple:
-        return posa[0]+posb[0],posa[1]+posb[1]
+    def tupleadd(cls, lhs:tuple, rhs:tuple) -> tuple:
+        return lhs[0]+rhs[0],lhs[1]+rhs[1]
