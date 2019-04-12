@@ -26,7 +26,7 @@ class Chunk:
         for x in range(0,16):
             for y in range(0,16):
                 isMine = False
-                if random() > 0.90:
+                if random() > 0.80:
                     isMine = True
                 self._chunk[x][y].isMine = isMine
 

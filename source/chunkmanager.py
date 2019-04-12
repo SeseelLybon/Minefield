@@ -102,9 +102,9 @@ class ChunkManager:
 
 
     @classmethod
-    def generate_screendots(cls, offset, windowsize:tuple) -> set:
-        #TODO: Replace with generate_screendots_redux
-        # This exists as it is not working yet
+    def generate_screendots_old(cls, offset, windowsize:tuple) -> set:
+        # Old version of static screendot generator
+        # Only works for 600*400 windows
         screenzero = -offset[0], -offset[1]
         dots = {Position.pixtochunk((screenzero[0], screenzero[1])),
                 Position.pixtochunk((screenzero[0] + windowsize[0] // 2, screenzero[1])),
@@ -120,18 +120,18 @@ class ChunkManager:
 
 
     @classmethod
-    def generate_screendots_redux(cls, offset, windowsize:tuple) -> set:
-        #TODO: rewrite to take into account window size
+    def generate_screendots(cls, offset, windowsize:tuple) -> set:
         #TODO: rewrite to take into account scale
         screenzero = -offset[0], -offset[1]
-        dots = {Position.pixtochunk((screenzero[0], screenzero[1])),
-                Position.pixtochunk((screenzero[0] + windowsize[0] // 2, screenzero[1])),
-                Position.pixtochunk((screenzero[0] + windowsize[0], screenzero[1])),
-                Position.pixtochunk((screenzero[0], screenzero[1] + windowsize[1] // 2)),
-                Position.pixtochunk((screenzero[0] + windowsize[0] // 2, screenzero[1] + windowsize[1] // 2)),
-                Position.pixtochunk((screenzero[0] + windowsize[0], screenzero[1] + windowsize[1] // 2)),
-                Position.pixtochunk((screenzero[0], screenzero[1] + windowsize[1])),
-                Position.pixtochunk((screenzero[0] + windowsize[0] // 2, screenzero[1] + windowsize[1])),
-                Position.pixtochunk((screenzero[0] + windowsize[0], screenzero[1] + windowsize[1])),
-                }
+
+        vischunks_x = int(windowsize[0]/21/16+2)
+        vischunks_y = int(windowsize[1]/21/16+2)
+
+        dots = list()
+
+        for x in range(0,windowsize[0]+1, windowsize[0]//vischunks_x):
+            for y in range(0, windowsize[1]+1, windowsize[1]//vischunks_y):
+                dots.append(Position.pixtochunk((screenzero[0]+x, screenzero[1]+y)))
+
+        dots = set(dots)
         return dots

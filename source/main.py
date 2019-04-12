@@ -17,7 +17,7 @@ logging.critical("Booting...")
 logging.info("Root... %s", __file__ )
 
 #fps_display = pyglet.clock.ClockDisplay()
-window = pyglet.window.Window(width=600,height=480)
+window = pyglet.window.Window()
 
 score = 0
 label = pyglet.text.Label('score: '+str(score),
