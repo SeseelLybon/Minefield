@@ -2,6 +2,7 @@
 
 
 import pyglet
+from scoremanager import ScoreManager
 
 class Tile:
 
@@ -10,12 +11,12 @@ class Tile:
                    pyglet.resource.image(resources_folder+'prox_1.png'),
                    pyglet.resource.image(resources_folder+'prox_2.png'),
                    pyglet.resource.image(resources_folder+'prox_3.png'),
-                   pyglet.resource.image(resources_folder+'prox_00.png'),
-                   pyglet.resource.image(resources_folder+'prox_00.png'),
-                   pyglet.resource.image(resources_folder+'prox_00.png'),
-                   pyglet.resource.image(resources_folder+'prox_00.png'),
-                   pyglet.resource.image(resources_folder+'prox_00.png'),
-                   pyglet.resource.image(resources_folder+'prox_00.png')]
+                   pyglet.resource.image(resources_folder+'prox_4.png'),
+                   pyglet.resource.image(resources_folder+'prox_5.png'),
+                   pyglet.resource.image(resources_folder+'prox_6.png'),
+                   pyglet.resource.image(resources_folder+'prox_7.png'),
+                   pyglet.resource.image(resources_folder+'prox_8.png')
+                   ]
 
     image_hidden = pyglet.resource.image(resources_folder+'hidden.png')
 
@@ -43,11 +44,6 @@ class Tile:
             else:
                 return str(self.proximity)
 
-    def draw(self, offset:tuple):
-        self.sprite.update(x=self.pos[0]+offset[0],y=self.pos[1]+offset[1])
-        self.sprite.draw()
-        pass
-
     def flag(self):
         if self.isHidden and not self.isFlagged:
             self.sprite.image = self.image_flagged
@@ -60,9 +56,11 @@ class Tile:
         if self.isMine:
             self.sprite.image = self.image_mine_hit
             self.isHidden = False
+            ScoreManager.changescore(-40)
         else:
             self.sprite.image = self.images_prox[prox]
             self.isHidden = False
+            ScoreManager.changescore(1)
 
     def updatepos(self, pos:tuple):
         self.sprite.update(x=pos[0],y=pos[1])

@@ -9,7 +9,7 @@ logging.basicConfig(level=logging.DEBUG)
 from position import Position
 
 from chunkmanager import ChunkManager
-from chunkmanager import batch
+from scoremanager import ScoreManager
 
 resources_folder = "resources/"
 
@@ -37,17 +37,19 @@ def on_draw():
     global offset
     global window
     window.clear()
-    #fps_display.draw()
-    label.text = 'score: '+str(score)
+    label.text = 'score: '+str(ScoreManager.getscore())
     ChunkManager.updatesprites(offset)
 
     #TODO: ambiant occlusion to tiles
-    #batch.draw()
-    for chunk in chunk_dict.values():
-        chunk.draw()
+    ChunkManager.screenspaceocclude_drawchunks(offset, (window.width, window.height))
+
+    #Check per chunk if its tiles have to be drawn - easier than asking every tile
+    #for chunk in chunk_dict.values():
+    #    chunk.draw()
 
 
     label.draw()
+    #fps_display.draw()
     ChunkManager.updategenchunks(offset, (window.width, window.height))
 
 @window.event

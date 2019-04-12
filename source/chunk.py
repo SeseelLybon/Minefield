@@ -4,12 +4,13 @@ from tile import Tile
 
 from random import random
 
+import pyglet
 
 import logging
 
 class Chunk:
-    def __init__(self, pos:tuple, chunkmanager, batch):
-        self.batch =
+    def __init__(self, pos:tuple, chunkmanager):
+        self.batch = pyglet.graphics.Batch()
         self.chunkmanager = chunkmanager
         self.pos = pos[0]*16*21,pos[1]*16*21 #self.pos is in pixels, pos is in chunks!!!
         self._chunk = [None]*16
@@ -19,7 +20,7 @@ class Chunk:
         #generate the data structure
         for x in range(0,16):
             for y in range(0,16):
-                self._chunk[x][y] = Tile(batch, pos=(x,y))
+                self._chunk[x][y] = Tile(self.batch, pos=(x,y))
 
         #populate the data structure with mines
         for x in range(0,16):
@@ -35,11 +36,8 @@ class Chunk:
             temp += str(x)+"\n"
         return temp
 
-    def draw(self, offset:tuple):
-        for y in self._chunk:
-            for tile in y:
-                tile.draw((offset[0]+self.pos[0],
-                           offset[1]+self.pos[1]))
+    def draw(self):
+        self.batch.draw()
 
     def updatesprites(self, pos:tuple):
         for x in range(0,16):
@@ -64,9 +62,9 @@ class Chunk:
                 neightiles = self.chunkmanager.getneighbouringtiles(poschunk=self.pos, postile=tilepos)
                 mines = self.getmines( neightiles )
                 tile.reveal(prox=mines)
-                if mines == 0 and True: # True = use recursion
+                if mines == 0 and False: # True = use recursion
                     #WARNING: RECURSIVE!
-                    #logging.warning("Chunk:68 Start of using a recursive function!")
+                    logging.warning("Chunk:68 Start of using a recursive function!")
                     for tile in neightiles:
                         pass
                         self.activatetile_recursive(tile)
