@@ -22,6 +22,7 @@ class Tile:
 
     image_mine = pyglet.resource.image(resources_folder+'mine.png')
     image_mine_hit = pyglet.resource.image(resources_folder+'mine_hit.png')
+    image_tile_destroyed = pyglet.resource.image(resources_folder+'destroyed.png')
     image_flagged = pyglet.resource.image(resources_folder+'flagged.png')
 
 
@@ -52,16 +53,23 @@ class Tile:
             self.sprite.image = self.image_hidden
             self.isFlagged = False
 
-    def reveal(self,prox:int=0):
+    def triggermine(self):
         if self.isMine:
             self.sprite.image = self.image_mine_hit
             self.isHidden = False
             ScoreManager.hitmine()
         else:
-            self.sprite.image = self.images_prox[prox]
-            self.proximity = prox
+            self.sprite.image = self.image_tile_destroyed
             self.isHidden = False
-            ScoreManager.nomine()
+            ScoreManager.losttile()
+
+
+
+    def reveal(self,prox:int=0):
+        self.sprite.image = self.images_prox[prox]
+        self.proximity = prox
+        self.isHidden = False
+        ScoreManager.nomine()
 
     def updatepos(self, pos:tuple):
         self.sprite.update(x=pos[0],y=pos[1])

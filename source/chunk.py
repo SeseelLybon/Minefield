@@ -52,18 +52,57 @@ class Chunk:
 
     def flagtile(self, tilepos:tuple):
         self.gettile(tilepos).flag()
+        '''
+        neightiles = self.chunkmanager.getneighbouringtiles(poschunk=self.pos, postile=tilepos)
+        flags = self.getflagsandmines(neightiles)
 
-    def activatetile(self, tilepos=None, tile=None):
+        if tile.proximity == flags:
+            #WARNING: RECURSIVE!
+            for neightile in neightiles:
+                chunk, tile = neightile
+                if tile.isHidden and not tile.isFlagged:
+                    # logging.debug("Chunk:76 Activiating Tile %s %s", tile, tile.pos)
+                    tile.flag()
+        '''
+
+    def activatetile(self, tilepos=None, tile=None, explosion=False):
+
+        #Check for bonus
 
         if not tile:
             tile = self.gettile(tilepos)
         elif not tilepos:
             tilepos = tile.pos
 
+        '''
+        if tile.isMine and explosion:
+            if tile.isMine:
+                tile.triggermine()
 
+                neightiles = self.chunkmanager.getneighbouringtiles(poschunk=self.pos, postile=tilepos)
+
+                for neightile in neightiles:
+                    chunk, tile = neightile
+                    # logging.debug("Chunk:76 Activiating Tile %s %s", tile, tile.pos)
+                    if tile.isMine:
+                        chunk.activatetile(tile=tile, explosion=True)
+                    else:
+                        tile.triggermine()
+        '''
         if tile.isHidden and not tile.isFlagged:
             if tile.isMine:
-                tile.reveal()
+                tile.triggermine()
+
+                neightiles = self.chunkmanager.getneighbouringtiles(poschunk=self.pos, postile=tilepos)
+
+                for neightile in neightiles:
+                    chunk, tile = neightile
+                    # logging.debug("Chunk:76 Activiating Tile %s %s", tile, tile.pos)
+                    if tile.isMine:
+                        chunk.activatetile(tile=tile, explosion=True)
+                    else:
+                        tile.triggermine()
+
             else:
                 neightiles = self.chunkmanager.getneighbouringtiles(poschunk=self.pos, postile=tilepos)
 
