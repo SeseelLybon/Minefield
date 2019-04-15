@@ -51,42 +51,30 @@ class Chunk:
     def flagtile(self, tilepos:tuple):
         self.gettile(tilepos).flag()
 
-    def activatetile(self, tilepos:tuple):
+    def activatetile(self, tilepos=None, tile=None):
 
-        tile = self.gettile(tilepos)
+        if not tile:
+            tile = self.gettile(tilepos)
+        elif not tilepos:
+            tilepos = tile.pos
+
 
         if tile.isHidden and not tile.isFlagged:
             if tile.isMine:
                 tile.reveal()
             else:
                 neightiles = self.chunkmanager.getneighbouringtiles(poschunk=self.pos, postile=tilepos)
+
                 mines = self.getmines( neightiles )
+
                 tile.reveal(prox=mines)
-                if mines == 0 and False: # True = use recursion
+
+                if mines == 0 and True: # True = use recursion
                     #WARNING: RECURSIVE!
                     logging.warning("Chunk:68 Start of using a recursive function!")
                     for tile in neightiles:
-                        pass
-                        self.activatetile_recursive(tile)
-
-    def activatetile_recursive(self, tile:Tile):
-        tilepos = tile.pos
-
-        if not tile.isFlagged:
-            if tile.isMine:
-                tile.reveal()
-            else:
-                #TODO: sends wierd postile
-                #logging.debug("chunk:81 %s, %s", self.pos, tilepos)
-                neightiles = self.chunkmanager.getneighbouringtiles(poschunk=self.pos, postile=tilepos)
-                mines = self.getmines( neightiles )
-                tile.reveal(prox=mines)
-                if mines == 0 and False: # True = use recursion
-                    #WARNING: RECURSIVE!
-                    logging.warning("Chunk:87 Continues use of a recursive function!")
-                    for tile in neightiles:
-                        pass
-                        self.activatetile_recursive(tile)
+                        if tile.isHidden and not tile.isFlagged:
+                            self.activatetile(tile=tile)
 
     @staticmethod
     def getmines(tiles:list) ->int:
