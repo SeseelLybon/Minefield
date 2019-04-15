@@ -67,8 +67,6 @@ class Chunk:
 
     def activatetile(self, tilepos=None, tile=None, explosion=False):
 
-        #Check for bonus
-
         if not tile:
             tile = self.gettile(tilepos)
         elif not tilepos:
@@ -89,7 +87,7 @@ class Chunk:
                     else:
                         tile.triggermine()
         '''
-        if tile.isHidden and not tile.isFlagged:
+        if tile.isHidden and (not tile.isFlagged or explosion):
             if tile.isMine:
                 tile.triggermine()
 
