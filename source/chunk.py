@@ -3,7 +3,7 @@
 from tile import Tile
 
 import random
-random.seed(50)
+#random.seed(50)
 
 import pyglet
 
