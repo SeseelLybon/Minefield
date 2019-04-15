@@ -59,6 +59,7 @@ class Tile:
             ScoreManager.hitmine()
         else:
             self.sprite.image = self.images_prox[prox]
+            self.proximity = prox
             self.isHidden = False
             ScoreManager.nomine()
 

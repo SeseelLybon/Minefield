@@ -4,9 +4,10 @@ from tile import Tile
 
 import random
 #random.seed(50)
+print("Seed is", random.seed())
 
 import pyglet
-
+from scoremanager import ScoreManager
 import logging
 
 class Chunk:
@@ -79,6 +80,24 @@ class Chunk:
                             #logging.debug("Chunk:76 Activiating Tile %s %s", tile, tile.pos)
                             chunk.activatetile(tile=tile)
 
+        # if the tile is not hidden, if it has the same amount as flags as proximity, reveal the other tiles
+        # REGARDLESS IF IT IS A BAD FLAG
+        elif not tile.isHidden:
+            neightiles = self.chunkmanager.getneighbouringtiles(poschunk=self.pos, postile=tilepos)
+            flags = self.getflagsandmines(neightiles)
+
+            if tile.proximity == flags:
+                #WARNING: RECURSIVE!
+                for neightile in neightiles:
+                    chunk, tile = neightile
+                    if tile.isHidden and not tile.isFlagged:
+                        # logging.debug("Chunk:76 Activiating Tile %s %s", tile, tile.pos)
+                        chunk.activatetile(tile=tile)
+
+
+
+
+
     @staticmethod
     def getmines(tiles:list) ->int:
         count = 0
@@ -86,3 +105,12 @@ class Chunk:
             if tile[1].isMine:
                 count+=1
         return count
+
+    @staticmethod
+    def getflagsandmines(tiles: list) -> int:
+        count = 0
+        for tile in tiles:
+            if tile[1].isFlagged or (tile[1].isMine and not tile[1].isHidden):
+                count += 1
+        return count
+

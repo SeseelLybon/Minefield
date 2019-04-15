@@ -11,11 +11,15 @@ class ScoreManager:
 
     @classmethod
     def hitmine(cls):
-        cls._score-=100
+        cls._score-=200
 
     @classmethod
     def nomine(cls):
         cls._score+=1
+
+    @classmethod
+    def clearedchunk(cls):
+        cls._score+=500
 
     @classmethod
     def getscore(cls) -> int:
