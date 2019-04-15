@@ -2,7 +2,8 @@
 
 from tile import Tile
 
-from random import random
+import random
+random.seed(50)
 
 import pyglet
 
@@ -26,7 +27,7 @@ class Chunk:
         for x in range(0,16):
             for y in range(0,16):
                 isMine = False
-                if random() > 0.80:
+                if random.random() > 0.90:
                     isMine = True
                 self._chunk[x][y].isMine = isMine
 
@@ -71,9 +72,10 @@ class Chunk:
 
                 if mines == 0 and True: # True = use recursion
                     #WARNING: RECURSIVE!
-                    logging.warning("Chunk:68 Start of using a recursive function!")
+                    #logging.warning("Chunk:74 Start of using a recursive function!")
                     for tile in neightiles:
                         if tile.isHidden and not tile.isFlagged:
+                            #logging.debug("Chunk:76 Activiating Tile %s %s", tile, tile.pos)
                             self.activatetile(tile=tile)
 
     @staticmethod
