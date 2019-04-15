@@ -56,11 +56,11 @@ class Tile:
         if self.isMine:
             self.sprite.image = self.image_mine_hit
             self.isHidden = False
-            ScoreManager.changescore(-40)
+            ScoreManager.hitmine()
         else:
             self.sprite.image = self.images_prox[prox]
             self.isHidden = False
-            ScoreManager.changescore(1)
+            ScoreManager.nomine()
 
     def updatepos(self, pos:tuple):
         self.sprite.update(x=pos[0],y=pos[1])

@@ -103,9 +103,8 @@ def on_mouse_drag(x, y, dx, dy, buttons, modifiers):
 
 logging.critical("Pyglet.run()")
 
-import cProfile
-
-cProfile.run('pyglet.app.run()')
+#import cProfile
+#cProfile.run('pyglet.app.run()')
 
 pyglet.app.run()
 
