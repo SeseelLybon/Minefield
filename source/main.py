@@ -32,6 +32,15 @@ chunk_dict = ChunkManager.chunk_dict
 
 offset = [0,0]
 
+#generate a 'spawn area'
+gen_static_starting_area = False# If true; generate a static area, if False the area on the screen)
+if gen_static_starting_area:
+    for x in range(-6,8):
+        for y in range(-6, 8):
+            ChunkManager.registerchunk((x,y))
+else:
+    ChunkManager.updategenchunks(offset, (window.width, window.height))
+
 @window.event
 def on_draw():
     global offset

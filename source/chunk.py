@@ -73,15 +73,16 @@ class Chunk:
                 if mines == 0 and True: # True = use recursion
                     #WARNING: RECURSIVE!
                     #logging.warning("Chunk:74 Start of using a recursive function!")
-                    for tile in neightiles:
+                    for neightile in neightiles:
+                        chunk, tile = neightile
                         if tile.isHidden and not tile.isFlagged:
                             #logging.debug("Chunk:76 Activiating Tile %s %s", tile, tile.pos)
-                            self.activatetile(tile=tile)
+                            chunk.activatetile(tile=tile)
 
     @staticmethod
     def getmines(tiles:list) ->int:
         count = 0
         for tile in tiles:
-            if tile.isMine:
+            if tile[1].isMine:
                 count+=1
         return count

@@ -35,7 +35,10 @@ class ChunkManager:
             offsettile = Position.tupleadd(postile, offset)
 
             if 0 < offsettile[0] < 16 and 0 < offsettile[1] < 16:
-                tiles.append( cls.chunk_dict[poschunk].gettile(offsettile) )
+                chunk_p = cls.chunk_dict[poschunk]
+                tiles.append( (chunk_p,
+                               chunk_p.gettile(offsettile))
+                            )
 
             elif True:
                 #what if the tile is outside the chunk?
@@ -68,7 +71,18 @@ class ChunkManager:
                 elif offsettile[1] == 16:
                     offsettile[1] = 0
 
-                tiles.append( cls.chunk_dict[offset_chunk].gettile(offsettile) )
+
+                #TODO: Think of a more sane way to do this
+
+                chunk_p = cls.chunk_dict.get(offset_chunk, None)
+
+                if not chunk_p:
+                    cls.registerchunk(offset_chunk)
+                    chunk_p = cls.chunk_dict.get(offset_chunk)
+
+                tiles.append( (chunk_p,
+                               chunk_p.gettile(offsettile))
+                            )
 
         return tiles
 
