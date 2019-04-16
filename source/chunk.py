@@ -7,30 +7,37 @@ import random
 print("Seed is", random.seed())
 
 import pyglet
-from scoremanager import ScoreManager
-import logging
 
 class Chunk:
-    def __init__(self, pos:tuple, chunkmanager):
+    def __init__(self, pos:tuple, chunkmanager, chunk=None):
+
         self.batch = pyglet.graphics.Batch()
         self.chunkmanager = chunkmanager
         self.pos = pos[0]*16*21,pos[1]*16*21 #self.pos is in pixels, pos is in chunks!!!
         self._chunk = [None]*16
+
         for i in range(0,16):
             self._chunk[i] = [None]*16
 
-        #generate the data structure
-        for x in range(0,16):
-            for y in range(0,16):
-                self._chunk[x][y] = Tile(self.batch, pos=(x,y))
+        if not chunk: #if no chunkhash was passed, generate new chunk data
 
-        #populate the data structure with mines
-        for x in range(0,16):
-            for y in range(0,16):
-                isMine = False
-                if random.random() > 0.83:
-                    isMine = True
-                self._chunk[x][y].isMine = isMine
+            #generate the data structure
+            for x in range(0,16):
+                for y in range(0,16):
+                    self._chunk[x][y] = Tile(self.batch, pos=(x,y))
+
+            #populate the data structure with mines
+            for x in range(0,16):
+                for y in range(0,16):
+                    isMine = False
+                    if random.random() > 0.83:
+                        isMine = True
+                    self._chunk[x][y].isMine = isMine
+
+        else: # if chunkhash was passed, use chunkhash for chunk
+            for x in range(0,16):
+                for y in range(0,16):
+                    self._chunk[x][y] = chunk.gettile((x,y))
 
     def __repr__(self):
         temp = ""
@@ -72,21 +79,7 @@ class Chunk:
         elif not tilepos:
             tilepos = tile.pos
 
-        '''
-        if tile.isMine and explosion:
-            if tile.isMine:
-                tile.triggermine()
 
-                neightiles = self.chunkmanager.getneighbouringtiles(poschunk=self.pos, postile=tilepos)
-
-                for neightile in neightiles:
-                    chunk, tile = neightile
-                    # logging.debug("Chunk:76 Activiating Tile %s %s", tile, tile.pos)
-                    if tile.isMine:
-                        chunk.activatetile(tile=tile, explosion=True)
-                    else:
-                        tile.triggermine()
-        '''
         if tile.isHidden and (not tile.isFlagged or explosion):
             if tile.isMine:
                 tile.triggermine()

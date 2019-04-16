@@ -8,6 +8,9 @@ class ScoreManager:
     def changescore(cls,rhs:int):
         cls._score+=rhs
 
+    @classmethod
+    def loadscore(cls, newscore):
+        cls._score=newscore
 
     @classmethod
     def hitmine(cls):
