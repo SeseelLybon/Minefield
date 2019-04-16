@@ -10,6 +10,7 @@ from position import Position
 
 from chunkmanager import ChunkManager
 from scoremanager import ScoreManager
+from savemanager import SaveManager
 
 resources_folder = "resources/"
 
@@ -38,7 +39,7 @@ if gen_static_starting_area:
     for x in range(-6,8):
         for y in range(-6, 8):
             ChunkManager.registerchunk((x,y))
-else:
+elif not SaveManager.loadpicklejarfromfile():
     ChunkManager.updategenchunks(offset, (window.width, window.height))
 
 @window.event
@@ -107,5 +108,9 @@ logging.critical("Pyglet.run()")
 #cProfile.run('pyglet.app.run()')
 
 pyglet.app.run()
+
+logging.info("Saving map to file")
+
+SaveManager.savepicklejartofile()
 
 logging.critical("End of main")

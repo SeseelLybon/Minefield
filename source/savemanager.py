@@ -7,6 +7,8 @@ import logging
 import random
 import pickle
 
+import os
+
 class SaveManager:
 
     @classmethod
@@ -21,8 +23,8 @@ class SaveManager:
             #go  through all of each chunk's tiles
             for x in range(0,16):
                 for y in range(0,16):
-                    chunkhash.append( cls.hashtile( chunk_p.gettile((x,y)) ))
-            logging.debug("%s", chunkhash)
+                    chunkhash.append( cls.hashtile( chunk_p._chunk[x][y] ))
+
 
             depointered_chunk_dict[chunk_pos] = chunkhash
 
@@ -30,11 +32,16 @@ class SaveManager:
 
     @classmethod
     def savepicklejartofile(cls):
+        print("Saving to picklejar")
         # saving
-        with open("resources\savefile.dat", 'wb') as outfile:
+        with open("resources\savefile.temp", 'wb') as outfile:
             pickle.dump([random.getstate(),
                          cls.chunkdict_depointer(),
                          ScoreManager.getscore()], outfile, protocol=2)
+        if os.path.isfile('resources\savefile.dat'):
+            os.remove('resources\savefile.dat')
+        os.rename("resources\savefile.temp", "resources\savefile.dat")
+        print("Done saving to picklejar")
 
 
 
@@ -42,18 +49,27 @@ class SaveManager:
     def picklejar_loadchunks(cls, chunkdict:dict):
         #go through each chunk
 
-        for chunk_pos, chunk_p in ChunkManager.chunk_dict.items():
-            ChunkManager.loadchunk(chunk_pos, chunk_p)
+        for chunk_pos, chunkhash in chunkdict.items():
+            ChunkManager.loadchunk(chunk_pos, chunkhash)
 
     @classmethod
-    def loadpicklejarfromfile(cls):
+    def loadpicklejarfromfile(cls) -> bool:
         # loading
-        with open('resources\savefile.dat', 'rb') as infile:
-            randomstate, depointered_chunkdict, score = pickle.load(infile)
 
-        random.setstate(randomstate)
-        ScoreManager.loadscore(score)
-        cls.picklejar_loadchunks(depointered_chunkdict)
+        if os.path.isfile('resources\savefile.dat'):
+            print("Loading from picklejar")
+            with open('resources\savefile.dat', 'rb') as infile:
+                randomstate, depointered_chunkdict, score = pickle.load(infile)
+
+            random.setstate(randomstate)
+            ScoreManager.loadscore(score)
+            cls.picklejar_loadchunks(depointered_chunkdict)
+
+            print("Done loading from picklejar")
+            return True # Did load from savefile
+        else:
+            print("No savefile to load from")
+            return False # Did NOT load from savefile
 
 
 
@@ -80,18 +96,23 @@ class SaveManager:
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
-    logging.warning("Starting savemanager.py as main")
+    print("Starting savemanager.py as main")
 
     logging.warning("Generating new chunk")
     ChunkManager.registerchunk((0, 0))
+    print(ChunkManager.chunk_dict[(0,0)])
 
-    logging.warning("Saving chunk to file")
+    print("Saving chunk to file")
     SaveManager.savepicklejartofile()
 
-    logging.warning("Loading chunk from savefile")
+    print("Destroying chunk dict")
+    ChunkManager.chunk_dict = dict()
+
+    print("Loading chunk from savefile")
     SaveManager.loadpicklejarfromfile()
+    print(ChunkManager.chunk_dict[(0,0)])
 
-    logging.warning("Saving chunk to file")
+    print("Saving chunk to file")
     SaveManager.savepicklejartofile()
 
-    logging.warning("Done with savemanager.py as main")
+    print("Done with savemanager.py as main")

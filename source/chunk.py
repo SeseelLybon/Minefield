@@ -9,7 +9,7 @@ print("Seed is", random.seed())
 import pyglet
 
 class Chunk:
-    def __init__(self, pos:tuple, chunkmanager, chunk=None):
+    def __init__(self, pos:tuple, chunkmanager, chunkhash=None):
 
         self.batch = pyglet.graphics.Batch()
         self.chunkmanager = chunkmanager
@@ -19,7 +19,7 @@ class Chunk:
         for i in range(0,16):
             self._chunk[i] = [None]*16
 
-        if not chunk: #if no chunkhash was passed, generate new chunk data
+        if not chunkhash: #if no chunkhash was passed, generate new chunk data
 
             #generate the data structure
             for x in range(0,16):
@@ -37,7 +37,7 @@ class Chunk:
         else: # if chunkhash was passed, use chunkhash for chunk
             for x in range(0,16):
                 for y in range(0,16):
-                    self._chunk[x][y] = chunk.gettile((x,y))
+                    self._chunk[x][y] = Tile(self.batch, pos=(x,y), tilehash=chunkhash[x*15+y])
 
     def __repr__(self):
         temp = ""

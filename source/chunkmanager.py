@@ -22,12 +22,12 @@ class ChunkManager:
         cls.chunk_dict[pos] = Chunk(pos,cls)
 
     @classmethod
-    def loadchunk(cls, pos:tuple, chunk):
+    def loadchunk(cls, pos:tuple, chunkhash):
         cls.worldsize[0] = min(cls.worldsize[0], pos[0])
         cls.worldsize[1] = max(cls.worldsize[1], pos[0])
         cls.worldsize[2] = min(cls.worldsize[2], pos[1])
         cls.worldsize[3] = max(cls.worldsize[3], pos[1])
-        cls.chunk_dict[pos] = Chunk(pos, cls, chunk)
+        cls.chunk_dict[pos] = Chunk(pos, cls, chunkhash)
 
     offsets = [(-1, -1), (0, -1), (1, -1),
                (-1, 0), (1, 0),  # doesn't contain (0,0) because this is self

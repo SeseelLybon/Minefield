@@ -48,13 +48,17 @@ class Tile:
 
         prox = tilehash%10
 
-        if tilehash//10 % 10 == 0:
+        tilehash//=10
+        if tilehash % 10 != 0:
             self.isHidden = True
-        if tilehash//100 % 10 == 0:
+        tilehash//=10
+        if tilehash % 10 != 0:
             self.isFlagged = True
-        if tilehash//1000 % 10 == 0:
+        tilehash//=10
+        if tilehash % 10 != 0:
             self.isMine = True
-        if tilehash//10000 % 10 == 0:
+        tilehash//=10
+        if tilehash % 10 != 0:
             self.isDestroyed = True
 
         if not self.isHidden:
@@ -64,6 +68,7 @@ class Tile:
                 self.reveal(prox=prox)
         elif self.isFlagged:
             self.flag()
+        pass
 
     def __repr__(self):
         if self.isMine:
