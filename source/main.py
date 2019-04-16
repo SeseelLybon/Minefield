@@ -5,9 +5,9 @@ from pyglet.window import mouse
 
 import logging
 logging.basicConfig(level=logging.DEBUG)
-
+import random
 from position import Position
-
+import os
 from chunkmanager import ChunkManager
 from scoremanager import ScoreManager
 from savemanager import SaveManager
@@ -39,8 +39,13 @@ if gen_static_starting_area:
     for x in range(-6,8):
         for y in range(-6, 8):
             ChunkManager.registerchunk((x,y))
-elif not SaveManager.loadpicklejarfromfile():
-    ChunkManager.updategenchunks(offset, (window.width, window.height))
+else:
+    if os.path.isfile('resources\savefile.dat'):
+        randomstate = SaveManager.loadpicklejarfromfile()
+        if randomstate:
+            random.setstate(randomstate)
+    else:
+        ChunkManager.updategenchunks(offset, (window.width, window.height))
 
 @window.event
 def on_draw():

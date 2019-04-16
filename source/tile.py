@@ -46,20 +46,11 @@ class Tile:
 
     def altinit(self, tilehash):
 
-        prox = tilehash%10
-
-        tilehash//=10
-        if tilehash % 10 != 0:
-            self.isHidden = True
-        tilehash//=10
-        if tilehash % 10 != 0:
-            self.isFlagged = True
-        tilehash//=10
-        if tilehash % 10 != 0:
-            self.isMine = True
-        tilehash//=10
-        if tilehash % 10 != 0:
-            self.isDestroyed = True
+        prox = tilehash[0]
+        self.isHidden = tilehash[1]
+        self.isFlagged = tilehash[2]
+        self.isMine = tilehash[3]
+        self.isDestroyed = tilehash[4]
 
         if not self.isHidden:
             if self.isMine:

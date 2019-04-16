@@ -28,6 +28,7 @@ class SaveManager:
 
             depointered_chunk_dict[chunk_pos] = chunkhash
 
+        #print(depointered_chunk_dict[(0,0)])
         return depointered_chunk_dict
 
     @classmethod
@@ -61,12 +62,12 @@ class SaveManager:
             with open('resources\savefile.dat', 'rb') as infile:
                 randomstate, depointered_chunkdict, score = pickle.load(infile)
 
-            random.setstate(randomstate)
+            #random.setstate(randomstate)
             ScoreManager.loadscore(score)
             cls.picklejar_loadchunks(depointered_chunkdict)
 
             print("Done loading from picklejar")
-            return True # Did load from savefile
+            return randomstate # Did load from savefile
         else:
             print("No savefile to load from")
             return False # Did NOT load from savefile
@@ -75,19 +76,19 @@ class SaveManager:
 
     @classmethod
     def hashtile(cls, tile):
-        boolhash = int()
+        tilehash = [False]*5
 
-        boolhash+=tile.proximity
+        tilehash[0]=tile.proximity
 
         if tile.isHidden:
-            boolhash+=10
+            tilehash[1]=True
         if tile.isFlagged:
-            boolhash+=100
+            tilehash[2]=True
         if tile.isMine:
-            boolhash+=1000
+            tilehash[3]=True
         if tile.isDestroyed:
-            boolhash+=10000
-        return boolhash
+            tilehash[4]=True
+        return tilehash
 
 
 
