@@ -12,6 +12,8 @@ from chunkmanager import ChunkManager
 from scoremanager import ScoreManager
 from savemanager import SaveManager
 
+random.seed(50)
+
 resources_folder = "resources/"
 
 logging.critical("Booting...")
