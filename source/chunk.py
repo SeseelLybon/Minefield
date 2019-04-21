@@ -3,8 +3,6 @@
 from tile import Tile
 
 import random
-#random.seed(50)
-print("Seed is", random.seed())
 
 import pyglet
 from scoremanager import ScoreManager

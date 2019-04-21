@@ -11,19 +11,29 @@ from position import Position
 from chunkmanager import ChunkManager
 from scoremanager import ScoreManager
 
+import random
+seed = random.random()*random.randint(1,99999999999999)
+print("seed is %s", seed)
+random.seed(seed)
+
 resources_folder = "resources/"
 
 logging.critical("Booting...")
 logging.info("Root... %s", __file__ )
 
 #fps_display = pyglet.clock.ClockDisplay()
-window = pyglet.window.Window(width=1000,height=600)
+window = pyglet.window.Window(width=1600,height=800)
 
-score = 0
-label = pyglet.text.Label('score: '+str(score),
+score_label = pyglet.text.Label('score: ' + str(0),
+                                font_name='Times New Roman',
+                                font_size=12,
+                                x=50, y=window.height-50,
+                                anchor_x='left', anchor_y='center')
+
+clearedtiles_label = pyglet.text.Label('Tiles cleared: '+str(0),
                         font_name='Times New Roman',
                         font_size=12,
-                        x=50, y=window.height-50,
+                        x=50, y=window.height-75,
                         anchor_x='left', anchor_y='center')
 
 chunk_dict = ChunkManager.chunk_dict
@@ -46,7 +56,8 @@ def on_draw():
     global offset
     global window
     window.clear()
-    label.text = 'score: '+str(ScoreManager.getscore())
+    score_label.text = 'score: ' + str(ScoreManager.getscore())
+    clearedtiles_label.text = 'Tiles cleared: ' + str(ScoreManager.getclearedtiles())
 
 
     #ChunkManager.updatesprites(offset)
@@ -55,7 +66,8 @@ def on_draw():
     ChunkManager.screenspaceocclude_drawchunks(offset, (window.width, window.height))
 
 
-    label.draw()
+    score_label.draw()
+    clearedtiles_label.draw()
     #fps_display.draw()
     ChunkManager.updategenchunks(offset, (window.width, window.height))
 

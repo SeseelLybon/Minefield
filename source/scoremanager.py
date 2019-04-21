@@ -3,11 +3,15 @@
 class ScoreManager:
 
     _score = 0
+    _clearedtiles = 0
 
     @classmethod
     def changescore(cls,rhs:int):
         cls._score+=rhs
 
+    @classmethod
+    def tilecleared(cls):
+        cls._clearedtiles+=1
 
     @classmethod
     def hitmine(cls):
@@ -19,7 +23,7 @@ class ScoreManager:
 
     @classmethod
     def clearedchunk(cls):
-        cls._score+=500
+        pass
 
     @classmethod
     def losttile(cls):
@@ -28,3 +32,7 @@ class ScoreManager:
     @classmethod
     def getscore(cls) -> int:
         return cls._score
+
+    @classmethod
+    def getclearedtiles(cls) -> int:
+        return cls._clearedtiles
