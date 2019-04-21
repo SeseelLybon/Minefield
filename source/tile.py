@@ -79,6 +79,9 @@ class Tile:
             self.isFlagged = False
 
     def triggermine(self):
+        if self.isHidden:
+            ScoreManager.tilecleared()
+
         if self.isMine:
             self.sprite.image = image_mine_hit
             self.isHidden = False
@@ -96,6 +99,7 @@ class Tile:
         self.proximity = prox
         self.isHidden = False
         ScoreManager.nomine()
+        ScoreManager.tilecleared()
 
     def updatepos(self, pos:tuple):
         self.sprite.update(x=pos[0],y=pos[1])
