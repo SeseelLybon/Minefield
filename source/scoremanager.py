@@ -12,9 +12,14 @@ class ScoreManager:
     @classmethod
     def tilecleared(cls):
         cls._clearedtiles+=1
+
     @classmethod
-    def loadscore(cls, newscore):
-        cls._score=newscore
+    def loadscore(cls, a):
+        cls._score=a
+
+    @classmethod
+    def loadtilescleared(cls, a):
+        cls._clearedtiles=a
 
     @classmethod
     def hitmine(cls):

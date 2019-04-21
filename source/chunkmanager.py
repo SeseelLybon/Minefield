@@ -8,6 +8,9 @@ import logging
 batch = pyglet.graphics.Batch()
 sprites = list()
 
+import random
+seed = random.random()*random.randint(1,99999999999999)
+
 class ChunkManager:
 
     worldsize = [0,0,0,0] #minx, maxx, miny, maxy
@@ -94,11 +97,6 @@ class ChunkManager:
 
         return tiles
 
-    #@classmethod
-    #def updatesprites(cls, offset):
-    #    for key, value in cls.chunk_dict.items():
-    #        value.updatesprites((offset[0]+value.pos[0],offset[1]+value.pos[1]))
-
     @classmethod
     def updategenchunks(cls, offset, windowsize:tuple):
 
@@ -121,24 +119,6 @@ class ChunkManager:
             if chunk:
                 chunk.updatesprites((offset[0] + chunk.pos[0], offset[1] + chunk.pos[1]))
                 chunk.batch.draw()
-
-
-    @classmethod
-    def generate_screendots_old(cls, offset, windowsize:tuple) -> set:
-        # Old version of static screendot generator
-        # Only works for 600*400 windows
-        screenzero = -offset[0], -offset[1]
-        dots = {Position.pixtochunk((screenzero[0], screenzero[1])),
-                Position.pixtochunk((screenzero[0] + windowsize[0] // 2, screenzero[1])),
-                Position.pixtochunk((screenzero[0] + windowsize[0], screenzero[1])),
-                Position.pixtochunk((screenzero[0], screenzero[1] + windowsize[1] // 2)),
-                Position.pixtochunk((screenzero[0] + windowsize[0] // 2, screenzero[1] + windowsize[1] // 2)),
-                Position.pixtochunk((screenzero[0] + windowsize[0], screenzero[1] + windowsize[1] // 2)),
-                Position.pixtochunk((screenzero[0], screenzero[1] + windowsize[1])),
-                Position.pixtochunk((screenzero[0] + windowsize[0] // 2, screenzero[1] + windowsize[1])),
-                Position.pixtochunk((screenzero[0] + windowsize[0], screenzero[1] + windowsize[1])),
-                }
-        return dots
 
 
     @classmethod

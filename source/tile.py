@@ -34,7 +34,7 @@ class Tile:
 
     def __init__(self, batch, pos:tuple, isMine=False, tilehash=None):
         self.pos = pos
-        self.proximity = 0
+        self.proximity = 0 #indicates that proximity has not yet been updated, looks save, might break
         self.isHidden = True
         self.isFlagged = False
         self.isMine = isMine
@@ -53,13 +53,13 @@ class Tile:
         self.isDestroyed = tilehash[4]
 
         if not self.isHidden:
-            if self.isMine:
+            if self.isMine or self.isDestroyed:
                 self.triggermine()
             else:
                 self.reveal(prox=prox)
-        elif self.isFlagged:
+        if self.isFlagged:
+            self.isFlagged = False
             self.flag()
-        pass
 
     def __repr__(self):
         if self.isMine:
@@ -85,10 +85,12 @@ class Tile:
         if self.isMine:
             self.sprite.image = image_mine_hit
             self.isHidden = False
+            self.isFlagged = False
             ScoreManager.hitmine()
         else:
             self.sprite.image = image_tile_destroyed
             self.isHidden = False
+            self.isFlagged = False
             self.isDestroyed = True
             ScoreManager.losttile()
 

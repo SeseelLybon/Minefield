@@ -12,10 +12,6 @@ from chunkmanager import ChunkManager
 from scoremanager import ScoreManager
 from savemanager import SaveManager
 
-import random
-seed = random.random()*random.randint(1,99999999999999)
-print("seed is %s", seed)
-random.seed(seed)
 
 resources_folder = "resources/"
 
@@ -51,10 +47,15 @@ if gen_static_starting_area:
             ChunkManager.registerchunk((x,y))
 else:
     if os.path.isfile('resources\savefile.dat'):
-        randomstate = SaveManager.loadpicklejarfromfile()
+        seed, randomstate = SaveManager.loadpicklejarfromfile()
+        random.seed(seed)
+        print("seed is %s", seed)
         if randomstate:
             random.setstate(randomstate)
     else:
+        from chunkmanager import seed
+        random.seed(seed)
+        print("seed is %s", seed)
         ChunkManager.updategenchunks(offset, (window.width, window.height))
 
 @window.event

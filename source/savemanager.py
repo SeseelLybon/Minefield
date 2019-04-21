@@ -9,6 +9,8 @@ import pickle
 
 import os
 
+from chunkmanager import seed
+
 class SaveManager:
 
     @classmethod
@@ -38,7 +40,10 @@ class SaveManager:
         with open("resources\savefile.temp", 'wb') as outfile:
             pickle.dump([random.getstate(),
                          cls.chunkdict_depointer(),
-                         ScoreManager.getscore()], outfile, protocol=2)
+                         ScoreManager.getscore(),
+                         ScoreManager.getclearedtiles(),
+                         seed],
+                         outfile, protocol=2)
         if os.path.isfile('resources\savefile.dat'):
             os.remove('resources\savefile.dat')
         os.rename("resources\savefile.temp", "resources\savefile.dat")
@@ -54,20 +59,21 @@ class SaveManager:
             ChunkManager.loadchunk(chunk_pos, chunkhash)
 
     @classmethod
-    def loadpicklejarfromfile(cls) -> bool:
+    def loadpicklejarfromfile(cls):
         # loading
 
         if os.path.isfile('resources\savefile.dat'):
             print("Loading from picklejar")
             with open('resources\savefile.dat', 'rb') as infile:
-                randomstate, depointered_chunkdict, score = pickle.load(infile)
+                randomstate, depointered_chunkdict, score, tilescleared, seed = pickle.load(infile)
 
             #random.setstate(randomstate)
-            ScoreManager.loadscore(score)
             cls.picklejar_loadchunks(depointered_chunkdict)
+            ScoreManager.loadscore(score)
+            ScoreManager.loadtilescleared(tilescleared)
 
             print("Done loading from picklejar")
-            return randomstate # Did load from savefile
+            return seed, randomstate # Did load from savefile
         else:
             print("No savefile to load from")
             return False # Did NOT load from savefile
@@ -88,6 +94,7 @@ class SaveManager:
             tilehash[3]=True
         if tile.isDestroyed:
             tilehash[4]=True
+
         return tilehash
 
 

@@ -35,7 +35,7 @@ class Chunk:
         else: # if chunkhash was passed, use chunkhash for chunk
             for x in range(0,16):
                 for y in range(0,16):
-                    self._chunk[x][y] = Tile(self.batch, pos=(x,y), tilehash=chunkhash[x*15+y])
+                    self._chunk[x][y] = Tile(self.batch, pos=(x,y), tilehash=chunkhash[x*16+y])
 
     def __repr__(self):
         temp = ""
