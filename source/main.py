@@ -11,7 +11,9 @@ import os
 from chunkmanager import ChunkManager
 from scoremanager import ScoreManager
 from savemanager import SaveManager
-from savemanager import ConfigManager
+from configmanager import ConfigManager
+from statemanager import ScreenStates
+from statemanager import StateManager
 
 resources_folder = "resources/"
 
@@ -44,7 +46,6 @@ clearedtiles_label = pyglet.text.Label('Tiles cleared: '+str(0),
 chunk_dict = ChunkManager.chunk_dict
 
 
-
 offset = [0,0]
 
 #generate a 'spawn area'
@@ -71,20 +72,24 @@ def on_draw():
     global offset
     global window
     window.clear()
-    score_label.text = 'score: ' + str(ScoreManager.getscore())
-    clearedtiles_label.text = 'Tiles cleared: ' + str(ScoreManager.getclearedtiles())
+
+    if StateManager.Screenstate == ScreenStates.MineField
+        score_label.text = 'score: ' + str(ScoreManager.getscore())
+        clearedtiles_label.text = 'Tiles cleared: ' + str(ScoreManager.getclearedtiles())
 
 
-    #ChunkManager.updatesprites(offset)
+        #ChunkManager.updatesprites(offset)
 
-    #Screenspace occlusion of the chunks
-    ChunkManager.screenspaceocclude_drawchunks(offset, (window.width, window.height))
+        #Screenspace occlusion of the chunks
+        ChunkManager.screenspaceocclude_drawchunks(offset, (window.width, window.height))
 
 
-    score_label.draw()
-    clearedtiles_label.draw()
-    #fps_display.draw()
-    ChunkManager.updategenchunks(offset, (window.width, window.height))
+        score_label.draw()
+        clearedtiles_label.draw()
+        #fps_display.draw()
+        ChunkManager.updategenchunks(offset, (window.width, window.height))
+    elif StateManager.Screenstate == ScreenStates.MainScreen:
+        logging.critical("Screenstate MainScreen is empty!!!")
 
 @window.event
 def on_key_press(symbol, modifiers):
