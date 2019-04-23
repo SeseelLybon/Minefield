@@ -20,15 +20,16 @@ class SaveManager:
 
         for chunk_pos, chunk_p in ChunkManager.chunk_dict.items():
         #chunk_pos, chunk_p = (0,0), ChunkManager.chunk_dict.get((0,0))
-            chunkhash = list()
+            if chunk_p.chunkChanged:
+                chunkhash = list()
 
-            #go  through all of each chunk's tiles
-            for x in range(0,16):
-                for y in range(0,16):
-                    chunkhash.append( cls.hashtile( chunk_p._chunk[x][y] ))
+                #go  through all of each chunk's tiles
+                for x in range(0,16):
+                    for y in range(0,16):
+                        chunkhash.append( cls.hashtile( chunk_p._chunk[x][y] ))
 
 
-            depointered_chunk_dict[chunk_pos] = chunkhash
+                depointered_chunk_dict[chunk_pos] = chunkhash
 
         #print(depointered_chunk_dict[(0,0)])
         return depointered_chunk_dict
@@ -96,9 +97,6 @@ class SaveManager:
             tilehash[4]=True
 
         return tilehash
-
-
-
 
 
 

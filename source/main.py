@@ -11,15 +11,23 @@ import os
 from chunkmanager import ChunkManager
 from scoremanager import ScoreManager
 from savemanager import SaveManager
-
+from savemanager import ConfigManager
 
 resources_folder = "resources/"
 
 logging.critical("Booting...")
 logging.info("Root... %s", __file__ )
 
+if not os.path.exists("resources\\config.json"):
+    ConfigManager.createdefaultconfig()
+else:
+    logging.debug("Config already exists")
+    ConfigManager.loadexistingconfig()
+
+windowsize = ConfigManager.config_dict.get("window_size")
+
 #fps_display = pyglet.clock.ClockDisplay()
-window = pyglet.window.Window(width=1600,height=800)
+window = pyglet.window.Window(width=windowsize[0],height=windowsize[1])
 
 score_label = pyglet.text.Label('score: ' + str(0),
                                 font_name='Times New Roman',

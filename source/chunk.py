@@ -8,7 +8,7 @@ import pyglet
 
 class Chunk:
     def __init__(self, pos:tuple, chunkmanager, chunkhash=None):
-
+        self.chunkChanged = False
         self.batch = pyglet.graphics.Batch()
         self.chunkmanager = chunkmanager
         self.pos = pos[0]*16*21,pos[1]*16*21 #self.pos is in pixels, pos is in chunks!!!
@@ -33,6 +33,7 @@ class Chunk:
                     self._chunk[x][y].isMine = isMine
 
         else: # if chunkhash was passed, use chunkhash for chunk
+            self.chunkChanged = True
             for x in range(0,16):
                 for y in range(0,16):
                     self._chunk[x][y] = Tile(self.batch, pos=(x,y), tilehash=chunkhash[x*16+y])
@@ -56,6 +57,7 @@ class Chunk:
 
 
     def flagtile(self, tilepos:tuple):
+        self.chunkChanged = True
         self.gettile(tilepos).flag()
         '''
         neightiles = self.chunkmanager.getneighbouringtiles(poschunk=self.pos, postile=tilepos)
@@ -71,7 +73,7 @@ class Chunk:
         '''
 
     def activatetile(self, tilepos=None, tile=None, explosion=False):
-
+        self.chunkChanged = True
         if not tile:
             tile = self.gettile(tilepos)
         elif not tilepos:
