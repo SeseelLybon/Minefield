@@ -39,20 +39,20 @@ class MainMenu:
     button_New_label = pyglet.text.Label("New game",
                             font_name='Times New Roman',
                             font_size=20,
-                            x=50, y=250,
-                            anchor_x='left', anchor_y='center')
+                            x=window_size[0]//2, y=window_size[1] - 200,
+                            anchor_x='center', anchor_y='center')
 
     button_Load_label = pyglet.text.Label("Load existing game",
                             font_name='Times New Roman',
                             font_size=20,
-                            x=window_size[0]//3, y=window_size[1] - 200,
-                            anchor_x='left', anchor_y='center')
+                            x=window_size[0]//2, y=window_size[1] - 250,
+                            anchor_x='center', anchor_y='center')
 
     button_Exit_label = pyglet.text.Label("Exit game",
                             font_name='Times New Roman',
                             font_size=20,
-                            x=window_size[0]//3, y=window_size[1] - 250,
-                            anchor_x='left', anchor_y='center')
+                            x=window_size[0]//2, y=window_size[1] - 300,
+                            anchor_x='center', anchor_y='center')
 
     @classmethod
     def draw(cls, offset, window):
@@ -63,11 +63,11 @@ class MainMenu:
 
     @classmethod
     def getbuttonclicked(cls, mouse_pos, window):
-        print("x Expect", cls.button_New_label.x, cls.button_New_label.x+200, "Got", mouse_pos[0])
-        print("y Expect", cls.button_New_label.y, cls.button_New_label.y+200, "Got", mouse_pos[1])
+        print("x Expect", cls.button_New_label.x, cls.button_New_label.x+110, "Got", mouse_pos[0])
+        print("y Expect", cls.button_New_label.y-50, cls.button_New_label.y, "Got", mouse_pos[1])
 
-        if cls.button_New_label.x > mouse_pos[0] > cls.button_New_label.x+200:
-            if cls.button_New_label.y > mouse_pos[1] > cls.button_New_label.y-50:
+        if cls.button_New_label.x-50 < mouse_pos[0] < cls.button_New_label.x+60:
+            if cls.button_New_label.y-15 < mouse_pos[1] < cls.button_New_label.y+15:
                 print("New game clicked"+str(mouse_pos))
 
 state_dict = {"MineField":MineField,
