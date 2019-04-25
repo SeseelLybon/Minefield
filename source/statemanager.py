@@ -38,10 +38,10 @@ class MineField:
 class MainMenu:
     window_size = ConfigManager.config_dict.get("window_size")
 
-    buttons_dict = {"button_New":  Button("New game", pos=(window_size[0]//2, window_size[1]-200)),
-                    "button_Load": Button("Load game", pos=(window_size[0]//2, window_size[1]-250)),
-                    "button_Save": Button("Save game", pos=(window_size[0]//2, window_size[1]-300)),
-                    "button_Exit": Button("Exit game", pos=(window_size[0]//2, window_size[1]-350))}
+    buttons_dict = {"button_New":  Button("New game", pos=(window_size[0]//2, window_size[1]-150)),
+                    "button_Load": Button("Load game", pos=(window_size[0]//2, window_size[1]-200)),
+                    "button_Save": Button("Save game", pos=(window_size[0]//2, window_size[1]-250)),
+                    "button_Exit": Button("Exit game", pos=(window_size[0]//2, window_size[1]-300))}
 
     @classmethod
     def draw(cls, offset, window):
