@@ -25,7 +25,6 @@ from statemanager import MineField
 resources_folder = "resources/"
 
 logging.critical("Booting...")
-logging.info("Root... %s", __file__ )
 
 windowsize = ConfigManager.config_dict.get("window_size")
 
@@ -37,6 +36,8 @@ chunk_dict = ChunkManager.chunk_dict
 
 offset = [0,0]
 
+
+'''
 #generate a 'spawn area'
 gen_static_starting_area = False# If true; generate a static area, if False the area on the screen)
 if gen_static_starting_area:
@@ -55,8 +56,9 @@ else:
         random.seed(seed)
         print("seed is %s", seed)
         ChunkManager.updategenchunks(offset, (window.width, window.height))
+'''
 
-Screenstate = "MineField"
+Screenstate = "MainMenu"
 
 @window.event
 def on_draw():
@@ -86,6 +88,7 @@ def on_key_press(symbol, modifiers):
 
 @window.event
 def on_mouse_release(x, y, button, modifiers):
+    global Screenstate
 
     if Screenstate == "MineField":
         global offset
@@ -109,10 +112,41 @@ def on_mouse_release(x, y, button, modifiers):
             if chunk:
                 chunk.flagtile(tilepos)
     elif Screenstate == "MainMenu":
-        state_dict[Screenstate].getbuttonclicked(mouse_pos=(x,y), window=window)
-        #if buttonclicked == "New game":
-            #pass
-        pass
+
+        button = state_dict[Screenstate].getbuttonclicked(mouse_pos=(x,y), window=window)
+
+        if not button:
+            pass
+
+        elif button.text == "New game":
+            logging.debug("Clicked New game")
+            ChunkManager.dump_chunks()
+            from chunkmanager import seed
+            random.seed(seed)
+            print("seed is %s", seed)
+            ChunkManager.updategenchunks(offset, (window.width, window.height))
+            Screenstate = "MineField"
+
+        elif button.text == "Load game":
+            logging.debug("Clicked Load game")
+            if os.path.isfile('resources\savefile.dat'):
+                seed, randomstate = SaveManager.loadpicklejarfromfile()
+                random.seed(seed)
+                print("seed is %s", seed)
+                if randomstate:
+                    random.setstate(randomstate)
+                Screenstate = "MineField"
+            else:
+                logging.critical("No savefile found!")
+
+        elif button.text == "Save game":
+            logging.debug("Clicked Save game")
+            SaveManager.savepicklejartofile()
+
+        elif button.text == "Exit game":
+            logging.debug("Clicked Quit game")
+            pyglet.app.exit()
+
 
 
 @window.event
@@ -139,8 +173,6 @@ def falseupdate(dt):
 pyglet.clock.schedule_interval_soft(falseupdate, 1//1)
 pyglet.app.run()
 
-logging.info("Saving map to file")
 
-SaveManager.savepicklejartofile()
 
 logging.critical("End of main")

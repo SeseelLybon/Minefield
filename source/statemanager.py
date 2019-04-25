@@ -4,6 +4,8 @@ from enum import Enum
 from enum import auto
 import pyglet
 
+from button import Button
+
 from chunkmanager import ChunkManager
 from scoremanager import ScoreManager
 from configmanager import ConfigManager
@@ -36,39 +38,27 @@ class MineField:
 class MainMenu:
     window_size = ConfigManager.config_dict.get("window_size")
 
-    button_New_label = pyglet.text.Label("New game",
-                            font_name='Times New Roman',
-                            font_size=20,
-                            x=window_size[0]//2, y=window_size[1] - 200,
-                            anchor_x='center', anchor_y='center')
-
-    button_Load_label = pyglet.text.Label("Load existing game",
-                            font_name='Times New Roman',
-                            font_size=20,
-                            x=window_size[0]//2, y=window_size[1] - 250,
-                            anchor_x='center', anchor_y='center')
-
-    button_Exit_label = pyglet.text.Label("Exit game",
-                            font_name='Times New Roman',
-                            font_size=20,
-                            x=window_size[0]//2, y=window_size[1] - 300,
-                            anchor_x='center', anchor_y='center')
+    buttons_dict = {"button_New":  Button("New game", pos=(window_size[0]//2, window_size[1]-200)),
+                    "button_Load": Button("Load game", pos=(window_size[0]//2, window_size[1]-250)),
+                    "button_Save": Button("Save game", pos=(window_size[0]//2, window_size[1]-300)),
+                    "button_Exit": Button("Exit game", pos=(window_size[0]//2, window_size[1]-350))}
 
     @classmethod
     def draw(cls, offset, window):
-        cls.button_New_label.draw()
-        cls.button_Load_label.draw()
-        cls.button_Exit_label.draw()
+        for button in cls.buttons_dict.values():
+            button.draw(offset, window)
 
 
     @classmethod
     def getbuttonclicked(cls, mouse_pos, window):
-        print("x Expect", cls.button_New_label.x, cls.button_New_label.x+110, "Got", mouse_pos[0])
-        print("y Expect", cls.button_New_label.y-50, cls.button_New_label.y, "Got", mouse_pos[1])
+        #TODO: rewrite to ask button for collision
 
-        if cls.button_New_label.x-50 < mouse_pos[0] < cls.button_New_label.x+60:
-            if cls.button_New_label.y-15 < mouse_pos[1] < cls.button_New_label.y+15:
-                print("New game clicked"+str(mouse_pos))
+        for button in cls.buttons_dict.values():
+            if button.getcollision(mouse_pos):
+                return button
+        return None
+
+
 
 state_dict = {"MineField":MineField,
               "MainMenu":MainMenu}

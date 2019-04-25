@@ -137,3 +137,8 @@ class ChunkManager:
 
         dots = set(dots)
         return dots
+
+    @classmethod
+    def dump_chunks(cls):
+        logging.critical("Clearing all chunks!")
+        cls.chunk_dict.clear()
