@@ -10,8 +10,21 @@ class ScoreManager:
         cls._score+=rhs
 
     @classmethod
+    def clearscore(cls):
+        cls._score=0
+        cls._clearedtiles=0
+
+    @classmethod
     def tilecleared(cls):
         cls._clearedtiles+=1
+
+    @classmethod
+    def loadscore(cls, a):
+        cls._score=a
+
+    @classmethod
+    def loadtilescleared(cls, a):
+        cls._clearedtiles=a
 
     @classmethod
     def hitmine(cls):

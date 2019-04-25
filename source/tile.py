@@ -32,14 +32,34 @@ class Tile:
 
 
 
-    def __init__(self, batch, pos:tuple, isMine=False):
+    def __init__(self, batch, pos:tuple, isMine=False, tilehash=None):
         self.pos = pos
-        self.isMine = isMine
-        self.proximity = 0
+        self.proximity = 0 #indicates that proximity has not yet been updated, looks save, might break
         self.isHidden = True
         self.isFlagged = False
+        self.isMine = isMine
+        self.isDestroyed = False
         self.sprite = pyglet.sprite.Sprite(image_hidden, x=pos[0], y=pos[1],
-                                           batch=batch )
+                                       batch=batch )
+        if tilehash:
+            self.altinit(tilehash)
+
+    def altinit(self, tilehash):
+
+        prox = tilehash[0]
+        self.isHidden = tilehash[1]
+        self.isFlagged = tilehash[2]
+        self.isMine = tilehash[3]
+        self.isDestroyed = tilehash[4]
+
+        if not self.isHidden:
+            if self.isMine or self.isDestroyed:
+                self.triggermine()
+            else:
+                self.reveal(prox=prox)
+        if self.isFlagged:
+            self.isFlagged = False
+            self.flag()
 
     def __repr__(self):
         if self.isMine:
@@ -65,10 +85,13 @@ class Tile:
         if self.isMine:
             self.sprite.image = image_mine_hit
             self.isHidden = False
+            self.isFlagged = False
             ScoreManager.hitmine()
         else:
             self.sprite.image = image_tile_destroyed
             self.isHidden = False
+            self.isFlagged = False
+            self.isDestroyed = True
             ScoreManager.losttile()
 
 

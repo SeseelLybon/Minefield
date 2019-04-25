@@ -8,6 +8,9 @@ import logging
 batch = pyglet.graphics.Batch()
 sprites = list()
 
+import random
+seed = random.random()*random.randint(1,99999999999999)
+
 class ChunkManager:
 
     worldsize = [0,0,0,0] #minx, maxx, miny, maxy
@@ -20,6 +23,14 @@ class ChunkManager:
         cls.worldsize[2] = min(cls.worldsize[2], pos[1])
         cls.worldsize[3] = max(cls.worldsize[3], pos[1])
         cls.chunk_dict[pos] = Chunk(pos,cls)
+
+    @classmethod
+    def loadchunk(cls, pos:tuple, chunkhash):
+        cls.worldsize[0] = min(cls.worldsize[0], pos[0])
+        cls.worldsize[1] = max(cls.worldsize[1], pos[0])
+        cls.worldsize[2] = min(cls.worldsize[2], pos[1])
+        cls.worldsize[3] = max(cls.worldsize[3], pos[1])
+        cls.chunk_dict[pos] = Chunk(pos, cls, chunkhash)
 
     offsets = [(-1, -1), (0, -1), (1, -1),
                (-1, 0), (1, 0),  # doesn't contain (0,0) because this is self
@@ -86,11 +97,6 @@ class ChunkManager:
 
         return tiles
 
-    #@classmethod
-    #def updatesprites(cls, offset):
-    #    for key, value in cls.chunk_dict.items():
-    #        value.updatesprites((offset[0]+value.pos[0],offset[1]+value.pos[1]))
-
     @classmethod
     def updategenchunks(cls, offset, windowsize:tuple):
 
@@ -116,24 +122,6 @@ class ChunkManager:
 
 
     @classmethod
-    def generate_screendots_old(cls, offset, windowsize:tuple) -> set:
-        # Old version of static screendot generator
-        # Only works for 600*400 windows
-        screenzero = -offset[0], -offset[1]
-        dots = {Position.pixtochunk((screenzero[0], screenzero[1])),
-                Position.pixtochunk((screenzero[0] + windowsize[0] // 2, screenzero[1])),
-                Position.pixtochunk((screenzero[0] + windowsize[0], screenzero[1])),
-                Position.pixtochunk((screenzero[0], screenzero[1] + windowsize[1] // 2)),
-                Position.pixtochunk((screenzero[0] + windowsize[0] // 2, screenzero[1] + windowsize[1] // 2)),
-                Position.pixtochunk((screenzero[0] + windowsize[0], screenzero[1] + windowsize[1] // 2)),
-                Position.pixtochunk((screenzero[0], screenzero[1] + windowsize[1])),
-                Position.pixtochunk((screenzero[0] + windowsize[0] // 2, screenzero[1] + windowsize[1])),
-                Position.pixtochunk((screenzero[0] + windowsize[0], screenzero[1] + windowsize[1])),
-                }
-        return dots
-
-
-    @classmethod
     def generate_screendots(cls, offset, windowsize:tuple) -> set:
         #TODO: rewrite to take into account scale
         screenzero = -offset[0], -offset[1]
@@ -149,3 +137,8 @@ class ChunkManager:
 
         dots = set(dots)
         return dots
+
+    @classmethod
+    def dump_chunks(cls):
+        logging.critical("Clearing all chunks!")
+        cls.chunk_dict.clear()
