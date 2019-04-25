@@ -57,7 +57,7 @@ else:
         print("seed is %s", seed)
         ChunkManager.updategenchunks(offset, (window.width, window.height))
 '''
-
+ChunkManager.updategenchunks((0,0), (window.width, window.height))
 Screenstate = "MainMenu"
 
 @window.event

@@ -45,6 +45,7 @@ class MainMenu:
 
     @classmethod
     def draw(cls, offset, window):
+        ChunkManager.screenspaceocclude_drawchunks(offset, (window.width, window.height))
         for button in cls.buttons_dict.values():
             button.draw(offset, window)
 
