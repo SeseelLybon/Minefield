@@ -20,7 +20,7 @@ import random
 from position import Position
 from chunkmanager import ChunkManager
 from statemanager import state_dict
-from statemanager import MineField
+from scoremanager import ScoreManager
 
 resources_folder = "resources/"
 
@@ -121,6 +121,7 @@ def on_mouse_release(x, y, button, modifiers):
         elif button.text == "New game":
             logging.debug("Clicked New game")
             ChunkManager.dump_chunks()
+            ScoreManager.clearscore()
             from chunkmanager import seed
             random.seed(seed)
             print("seed is %s", seed)

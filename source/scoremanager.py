@@ -10,6 +10,11 @@ class ScoreManager:
         cls._score+=rhs
 
     @classmethod
+    def clearscore(cls):
+        cls._score=0
+        cls._clearedtiles=0
+
+    @classmethod
     def tilecleared(cls):
         cls._clearedtiles+=1
 
