@@ -9,7 +9,6 @@ batch = pyglet.graphics.Batch()
 sprites = list()
 
 import random
-seed = random.random()*random.randint(1,99999999999999)
 
 class ChunkManager:
 
@@ -142,3 +141,15 @@ class ChunkManager:
     def dump_chunks(cls):
         logging.critical("Clearing all chunks!")
         cls.chunk_dict.clear()
+
+    @classmethod
+    def generate_new_seed(cls):
+        global seed
+        random.seed()
+        seed = random.random() * random.randint(1, 99999999999999)
+        random.seed(seed)
+
+
+
+seed = None
+ChunkManager.generate_new_seed()

@@ -6,6 +6,8 @@ class Position:
 
     tilesize = 21
     chunksize = 16
+    scale = 1
+    world_offset = [0,0]
 
     @classmethod
     def pixtopos(cls, pix : tuple) -> tuple:
