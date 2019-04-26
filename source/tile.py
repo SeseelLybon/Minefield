@@ -3,6 +3,7 @@
 
 import pyglet
 from scoremanager import ScoreManager
+from position import Position
 
 resources_folder = "resources/"
 images_prox = [pyglet.resource.image(resources_folder + 'prox_0.png'),

@@ -131,10 +131,10 @@ def on_mouse_release(x, y, button, modifiers):
             pyglet.app.exit()
 
 
-
 @window.event
 def on_mouse_scroll(x, y, scroll_x, scroll_y):
-    pass
+    if Screenstate == "MineField":
+        Position.scale = round(Position.scale-scroll_y*0.1, 1)
 
 @window.event
 def on_mouse_drag(x, y, dx, dy, buttons, modifiers):
