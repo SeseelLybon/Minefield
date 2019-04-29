@@ -1,7 +1,7 @@
 
 
 from tile import Tile
-
+from position import Position
 import random
 
 import pyglet
@@ -50,7 +50,10 @@ class Chunk:
     def updatesprites(self, pos:tuple):
         for x in range(0,16):
             for y in range(0,16):
-                self._chunk[x][y].updatepos( (x*21+pos[0], y*21+pos[1]) )
+                self._chunk[x][y].updatepos( (x*21+pos[0],
+                                              y*21+pos[1]),
+                                             Position.scale)
+
 
     def gettile(self, pos):
         return self._chunk[pos[0]][pos[1]]

@@ -104,5 +104,5 @@ class Tile:
         ScoreManager.nomine()
         ScoreManager.tilecleared()
 
-    def updatepos(self, pos:tuple):
-        self.sprite.update(x=pos[0],y=pos[1])
+    def updatepos(self, pos:tuple, scale):
+        self.sprite.update(x=pos[0]*scale,y=pos[1]*scale,scale=scale)
