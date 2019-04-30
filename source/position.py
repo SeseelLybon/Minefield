@@ -22,9 +22,21 @@ class Position:
         return tile
 
     @classmethod
+    def pixtotile_scaled(cls, pix : tuple) -> tuple:
+        tile = pix[0]*cls.scale//cls.tilesize%cls.chunksize,\
+               pix[1]*cls.scale//cls.tilesize%cls.chunksize
+        return tile
+
+    @classmethod
     def pixtochunk(cls, pix : tuple) -> tuple:
         pos = pix[0]//cls.tilesize//cls.chunksize,\
               pix[1]//cls.tilesize//cls.chunksize
+        return pos
+
+    @classmethod
+    def pixtochunk_scaled(cls, pix : tuple) -> tuple:
+        pos = pix[0]*cls.scale//cls.tilesize//cls.chunksize,\
+              pix[1]*cls.scale//cls.tilesize//cls.chunksize
         return pos
 
     @classmethod

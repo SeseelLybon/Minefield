@@ -39,9 +39,9 @@ window = pyglet.window.Window(width=windowsize[0],height=windowsize[1])
 chunk_dict = ChunkManager.chunk_dict
 
 
-
 ChunkManager.updategenchunks((0,0), (window.width, window.height))
 Screenstate = "MainMenu"
+
 
 @window.event
 def on_draw():
@@ -78,8 +78,8 @@ def on_mouse_release(x, y, button, modifiers):
         x = x-Position.world_offset[0]
         y = y-Position.world_offset[1]
 
-        tilepos = Position.pixtotile((x,y))
-        chunkpos = Position.pixtochunk((x,y))
+        tilepos = Position.pixtotile_scaled((x,y))
+        chunkpos = Position.pixtochunk_scaled((x,y))
 
         if button == mouse.LEFT:
             logging.debug('Clicked at (%d, %d), %s, %s, %s', x, y, chunkpos, tilepos, Position.world_offset)
