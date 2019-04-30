@@ -3,6 +3,7 @@
 
 import pyglet
 from scoremanager import ScoreManager
+from position import Position
 
 resources_folder = "resources/"
 images_prox = [pyglet.resource.image(resources_folder + 'prox_0.png'),
@@ -104,4 +105,21 @@ class Tile:
         ScoreManager.tilecleared()
 
     def updatepos(self, pos:tuple):
+        self.sprite.update(x=pos[0],y=pos[1])
+
+    def updatepos_map(self, pos:tuple):
+
+        if self.isHidden:
+            pass
+            #sprite is light grey
+        elif self.isMine or self.isDestroyed:
+            pass
+            #sprite is yello/black
+        elif self.isFlagged:
+            pass
+            #sprite is red
+        else:
+            pass
+            #sprite is light grey
+
         self.sprite.update(x=pos[0],y=pos[1])

@@ -59,7 +59,13 @@ class MainMenu:
                 return button
         return None
 
+class MapView:
+    window_size = ConfigManager.config_dict.get("window_size")
 
+    @classmethod
+    def draw(cls, offset, window):
+        pass
 
 state_dict = {"MineField":MineField,
-              "MainMenu":MainMenu}
+              "MainMenu":MainMenu,
+              "MapView":MapView}
