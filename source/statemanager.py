@@ -59,7 +59,30 @@ class MainMenu:
                 return button
         return None
 
+class OptionsMenu:
+    window_size = ConfigManager.config_dict.get("window_size")
 
+    buttons_dict = {"button_New":  Button("New game", pos=(window_size[0]//2, window_size[1]-150)),
+                    "button_Load": Button("Load game", pos=(window_size[0]//2, window_size[1]-200)),
+                    "button_Save": Button("Save game", pos=(window_size[0]//2, window_size[1]-250)),
+                    "button_Exit": Button("Exit game", pos=(window_size[0]//2, window_size[1]-300))}
+
+    @classmethod
+    def draw(cls, offset, window):
+        ChunkManager.screenspaceocclude_drawchunks(offset, (window.width, window.height))
+        for button in cls.buttons_dict.values():
+            button.draw(offset, window)
+
+
+    @classmethod
+    def getbuttonclicked(cls, mouse_pos, window):
+        #TODO: rewrite to ask button for collision
+
+        for button in cls.buttons_dict.values():
+            if button.getcollision(mouse_pos):
+                return button
+        return None
 
 state_dict = {"MineField":MineField,
-              "MainMenu":MainMenu}
+              "MainMenu":MainMenu,
+              "OptionsMenu":OptionsMenu}

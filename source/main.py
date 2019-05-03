@@ -9,6 +9,8 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 import os
 
+
+#Load config before everything else!
 if not os.path.exists("resources\\config.json"):
     ConfigManager.createdefaultconfig()
 else:

@@ -3,7 +3,7 @@
 from tile import Tile
 
 import random
-
+from configmanager import ConfigManager
 import pyglet
 
 class Chunk:
@@ -25,10 +25,11 @@ class Chunk:
                     self._chunk[x][y] = Tile(self.batch, pos=(x,y))
 
             #populate the data structure with mines
+            tilenotminechance = 1-ConfigManager.config_dict["Minedensity"]
             for x in range(0,16):
                 for y in range(0,16):
                     isMine = False
-                    if random.random() > 0.83:
+                    if random.random() > tilenotminechance:
                         isMine = True
                     self._chunk[x][y].isMine = isMine
 

@@ -1,4 +1,5 @@
 
+from configmanager import ConfigManager
 
 class ScoreManager:
 
@@ -28,7 +29,7 @@ class ScoreManager:
 
     @classmethod
     def hitmine(cls):
-        cls._score-=50
+        cls._score-=ConfigManager.config_dict["Minepenalty"]
 
     @classmethod
     def nomine(cls):
@@ -40,7 +41,7 @@ class ScoreManager:
 
     @classmethod
     def losttile(cls):
-        cls._score-=10
+        cls._score-=ConfigManager.config_dict["Tilepenalty"]
 
     @classmethod
     def getscore(cls) -> int:

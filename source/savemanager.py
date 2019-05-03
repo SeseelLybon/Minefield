@@ -2,6 +2,7 @@
 
 from chunkmanager import ChunkManager
 from scoremanager import ScoreManager
+from configmanager import ConfigManager
 
 import logging
 import random
@@ -43,7 +44,8 @@ class SaveManager:
                          cls.chunkdict_depointer(),
                          ScoreManager.getscore(),
                          ScoreManager.getclearedtiles(),
-                         seed],
+                         seed,
+                         ConfigManager.config_dict],
                          outfile, protocol=2)
         if os.path.isfile('resources\savefile.dat'):
             os.remove('resources\savefile.dat')
@@ -66,7 +68,7 @@ class SaveManager:
         if os.path.isfile('resources\savefile.dat'):
             print("Loading from picklejar")
             with open('resources\savefile.dat', 'rb') as infile:
-                randomstate, depointered_chunkdict, score, tilescleared, seed = pickle.load(infile)
+                ConfigManager.config_dict, randomstate, depointered_chunkdict, score, tilescleared, seed = pickle.load(infile)
 
             #random.setstate(randomstate)
             cls.picklejar_loadchunks(depointered_chunkdict)
