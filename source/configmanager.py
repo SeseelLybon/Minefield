@@ -23,7 +23,7 @@ class ConfigManager:
 
         with open("resources\\config.json", "w") as f:
             f.write(json.dumps(cls.config_dict,
-                               sort_keys=True, indent=4, separators=(',', ': ')))
+                               sort_keys=True, indent=2, separators=(',', ': ')))
 
     @classmethod
     def loadexistingconfig(cls, manualdefault=True):

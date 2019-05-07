@@ -62,10 +62,10 @@ class MainMenu:
 class OptionsMenu:
     window_size = ConfigManager.config_dict.get("window_size")
 
-    buttons_dict = {"button_New":  Button("New game", pos=(window_size[0]//2, window_size[1]-150)),
-                    "button_Load": Button("Load game", pos=(window_size[0]//2, window_size[1]-200)),
-                    "button_Save": Button("Save game", pos=(window_size[0]//2, window_size[1]-250)),
-                    "button_Exit": Button("Exit game", pos=(window_size[0]//2, window_size[1]-300))}
+    buttons_dict = {"button_mines_easy":  Button("Easy (14%)", pos=(window_size[0]//3, window_size[1]-150)),
+                    "button_mines_medium": Button("Medium (16%)", pos=(window_size[0]//3, window_size[1]-200)),
+                    "button_mines_hard": Button("Hard (18%)", pos=(window_size[0]//3, window_size[1]-250)),
+                    "button_mines_very_hard": Button("Very Hard (20%)", pos=(window_size[0]//3, window_size[1]-300))}
 
     @classmethod
     def draw(cls, offset, window):
