@@ -108,3 +108,7 @@ venv.bak/
 source/resources/savefile\.dat
 
 source/resources/config\.json
+
+Minefield\.pyproj
+
+\.vs/
