@@ -105,3 +105,7 @@ class Tile:
 
     def updatepos(self, pos:tuple):
         self.sprite.update(x=pos[0],y=pos[1])
+
+if __name__ == "__main__":
+    import sys
+    print("A single tile is", sys.getsizeof(Tile(None,(0,0),False)), "bytes")

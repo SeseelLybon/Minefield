@@ -112,3 +112,5 @@ source/resources/config\.json
 Minefield\.pyproj
 
 \.vs/
+
+*.sln

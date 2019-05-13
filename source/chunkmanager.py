@@ -153,3 +153,12 @@ class ChunkManager:
 
 seed = None
 ChunkManager.generate_new_seed()
+
+
+
+if __name__ == "__main__":
+    import sys
+    ChunkManager.registerchunk(pos=(0,0))
+    chunk = ChunkManager.chunk_dict.get((0,0))
+    #print(chunk)
+    print("A single chunk is", sys.deep_getsizeof(chunk), "bytes")

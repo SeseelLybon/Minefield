@@ -144,4 +144,3 @@ class Chunk:
             if tile[1].isFlagged or (tile[1].isMine and not tile[1].isHidden):
                 count += 1
         return count
-
